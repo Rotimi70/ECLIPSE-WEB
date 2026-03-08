@@ -138,6 +138,201 @@ const FACULTIES = {
     depts:["B.Sc. Biology","B.Sc. Chemistry","B.Sc. Mathematics","B.Sc. Physics"]},
 };
 
+/* ============================================================
+   COURSE DATA — per department, per level
+   ============================================================ */
+const COURSE_DATA = {
+  "B.A. Arabic": {
+    100: ["Introduction to Arabic Language","Arabic Grammar I","Arabic Phonetics","Basic Arabic Composition","Arabic Reading Skills","Islamic Civilization"],
+    200: ["Arabic Grammar II","Arabic Literature I","Arabic Morphology","Translation Arabic–English","Arabic Conversation","History of Arabic Literature"],
+    300: ["Advanced Arabic Grammar","Classical Arabic Texts","Arabic Rhetoric","Arabic Literature II","Arabic Translation Techniques","Arabic Stylistics"],
+    400: ["Modern Arabic Literature","Arabic Linguistics","Arabic Drama & Poetry","Advanced Translation","Arabic Research Methods","Long Essay / Project"],
+  },
+  "B.A. English": {
+    100: ["Introduction to English Language","Introduction to Literature","English Phonetics and Phonology","Basic Grammar","African Literature I","Oral English"],
+    200: ["English Syntax","English Morphology","African Literature II","Introduction to Drama","Introduction to Poetry","Introduction to Prose"],
+    300: ["Advanced English Grammar","Sociolinguistics","Literary Criticism","Nigerian Literature","Semantics","Stylistics"],
+    400: ["Advanced Literary Theory","Discourse Analysis","Contemporary Literature","Pragmatics","Research Methods in English","Final Year Project"],
+  },
+  "B.A. History": {
+    100: ["Introduction to African History","History of Nigeria","Historical Methods","World Civilizations","History of West Africa","Introduction to Historiography"],
+    200: ["Pre-Colonial African History","History of Europe","Nigerian Political History","Economic History of Africa","African Nationalism","History of Islam in Africa"],
+    300: ["Colonial Rule in Africa","International History","Military History","Diplomatic History","Social History of Africa","Historiography II"],
+    400: ["Modern African History","Comparative History","Research Methods","Contemporary World History","Nigerian Foreign Policy","Final Year Project"],
+  },
+  "B.Sc. Accounting": {
+    100: ["Principles of Accounting","Introduction to Business","Business Mathematics","Microeconomics","Financial Accounting I","Introduction to Management"],
+    200: ["Financial Accounting II","Cost Accounting","Business Law","Statistics for Business","Macroeconomics","Taxation I"],
+    300: ["Advanced Financial Accounting","Auditing","Management Accounting","Taxation II","Accounting Information Systems","Public Sector Accounting"],
+    400: ["Financial Reporting","Forensic Accounting","Strategic Management","International Accounting","Accounting Theory","Project"],
+  },
+  "B.Sc. Economics": {
+    100: ["Principles of Microeconomics","Principles of Macroeconomics","Mathematics for Economists","Introduction to Statistics","Nigerian Economy","Economic History"],
+    200: ["Intermediate Microeconomics","Intermediate Macroeconomics","Econometrics I","Public Finance","Development Economics","Monetary Economics"],
+    300: ["Advanced Microeconomics","Advanced Macroeconomics","Econometrics II","International Economics","Labour Economics","Industrial Economics"],
+    400: ["Economic Policy Analysis","Mathematical Economics","Applied Econometrics","Energy Economics","Research Methods","Project"],
+  },
+  "B.Sc. Management": {
+    100: ["Principles of Management","Introduction to Business","Business Communication","Business Mathematics","Microeconomics","Introduction to Accounting"],
+    200: ["Organizational Behaviour","Marketing Management","Business Statistics","Financial Management","Production Management","Business Law"],
+    300: ["Human Resource Management","Strategic Management","Entrepreneurship","Operations Management","Leadership Studies","Business Ethics"],
+    400: ["Corporate Strategy","International Business","Change Management","Small Business Management","Research Methods","Project"],
+  },
+  "B.Sc. Transport and Logistics Management": {
+    100: ["Introduction to Transport Systems","Principles of Logistics","Transport Geography","Business Communication","Basic Economics","Statistics"],
+    200: ["Road Transport Management","Maritime Transport","Supply Chain Management","Transport Economics","Traffic Engineering","Logistics Operations"],
+    300: ["Air Transport Management","Port Management","Fleet Management","Transport Policy","Warehousing","Logistics Information Systems"],
+    400: ["International Logistics","Transport Planning","Supply Chain Strategy","Transport Law","Research Methods","Project"],
+  },
+  "B.Sc. Criminology and Security Studies": {
+    100: ["Introduction to Criminology","Criminal Law","Security Studies","Victimology","Crime Prevention","Research Methods"],
+    200: ["Theories of Crime","Penology","Policing","Terrorism Studies","Cybercrime","Criminal Justice"],
+    300: ["Forensic Science","Intelligence Studies","Border Security","Organised Crime","Counterterrorism","Criminal Psychology"],
+    400: ["Security Policy","Crime Analysis","Peace Operations","Advanced Research Methods","Security Management","Final Year Project"],
+  },
+  "B.Sc. Geography": {
+    100: ["Physical Geography","Human Geography","Cartography","GIS Fundamentals","Climatology","Environmental Management"],
+    200: ["Geomorphology","Population Geography","Remote Sensing","Economic Geography","Urban Geography","Hydrology"],
+    300: ["Advanced GIS","Regional Geography","Environmental Impact Assessment","Political Geography","Transport Geography","Research Methods"],
+    400: ["Applied GIS","Climate Change Studies","Resource Management","Land Use Planning","Advanced Cartography","Final Year Project"],
+  },
+  "B.Sc. International Relations": {
+    100: ["Introduction to International Relations","International Law","Foreign Policy Analysis","Global Politics","Diplomacy","International Organizations"],
+    200: ["International Political Economy","African Politics","Security Studies","Conflict Resolution","International Trade","Human Rights"],
+    300: ["Regional Integration","US Foreign Policy","Global Governance","Peace Studies","International Institutions","Research Methods"],
+    400: ["Nigerian Foreign Policy","Contemporary Global Issues","International Security","Globalisation","Advanced IR Theory","Final Year Project"],
+  },
+  "B.Sc. Peace Studies and Conflict Resolution": {
+    100: ["Peace Studies","Conflict Analysis","Negotiation and Mediation","Security Studies","Human Rights","Introduction to Research"],
+    200: ["Theories of Conflict","Post-Conflict Reconstruction","Non-Violent Resistance","Terrorism and Counter-Terrorism","Transitional Justice","Gender and Conflict"],
+    300: ["Peacebuilding","Conflict Management","International Peacekeeping","Dialogue and Reconciliation","Arms Control","Research Methods"],
+    400: ["Advanced Peace Studies","UN Peace Operations","Community Peace Initiatives","Conflict and Development","Post-War Justice","Final Year Project"],
+  },
+  "B.Sc. Political Science": {
+    100: ["Political Theory","Nigerian Government","Comparative Politics","Public Administration","International Politics","Political Economy"],
+    200: ["African Political Systems","Nigerian Federalism","Political Parties","Constitutional Law","Electoral Studies","Public Policy"],
+    300: ["Democratic Theory","Civil Society","Political Communication","Governance","Legislature Studies","Research Methods"],
+    400: ["Nigerian Foreign Policy","Advanced Political Theory","Legislative Process","Local Government","Political Development","Final Year Project"],
+  },
+  "B.Sc. Psychology": {
+    100: ["General Psychology","Cognitive Psychology","Social Psychology","Developmental Psychology","Abnormal Psychology","Research Methods"],
+    200: ["Experimental Psychology","Personality Psychology","Biological Bases of Behaviour","Statistics for Psychology","Educational Psychology","Health Psychology"],
+    300: ["Clinical Psychology","Organisational Psychology","Neuropsychology","Community Psychology","Counselling Psychology","Research Design"],
+    400: ["Psychopathology","Advanced Clinical Psychology","Forensic Psychology","Industrial Psychology","Psychotherapy","Final Year Project"],
+  },
+  "B.Sc. Sociology": {
+    100: ["Introduction to Sociology","Social Theory","Sociology of Development","Sociology of Family","Urban Sociology","Research Methods"],
+    200: ["Social Stratification","Gender Studies","Political Sociology","Rural Sociology","Medical Sociology","Statistics for Social Sciences"],
+    300: ["Industrial Sociology","Sociology of Religion","Population Studies","Sociology of Education","Social Problems","Research Methods II"],
+    400: ["Advanced Social Theory","Sociology of Knowledge","Globalisation and Society","Advanced Research Methods","Criminology","Final Year Project"],
+  },
+  "B.Sc. Computer Science": {
+    100: ["Introduction to Programming","Computer Fundamentals","Discrete Mathematics","Calculus for Computing","Logic and Algorithms","Communication Skills"],
+    200: ["Data Structures","Object-Oriented Programming","Computer Architecture","Database Management","Operating Systems","Statistics"],
+    300: ["Algorithms Analysis","Software Engineering","Computer Networks","Artificial Intelligence","Compiler Construction","Research Methods"],
+    400: ["Machine Learning","Distributed Systems","Advanced Database Systems","Computer Graphics","Project Management","Final Year Project"],
+  },
+  "B.Sc. Cyber Security": {
+    100: ["Introduction to Cyber Security","Computer Fundamentals","Networking Basics","Mathematics for IT","Programming Basics","Communication Skills"],
+    200: ["Network Security","Ethical Hacking","Cryptography","Operating Systems Security","Digital Forensics","Database Security"],
+    300: ["Cyber Law","Penetration Testing","Incident Response","Security Architecture","Malware Analysis","Research Methods"],
+    400: ["Advanced Cryptography","Cloud Security","IoT Security","Security Governance","Risk Management","Final Year Project"],
+  },
+  "B.Sc. Information System": {
+    100: ["Information Systems Fundamentals","Introduction to Programming","Business Computing","Database Basics","Communication Skills","Mathematics"],
+    200: ["Database Management","Systems Analysis & Design","Business Intelligence","IT Project Management","Enterprise Systems","E-Commerce"],
+    300: ["Advanced Database Systems","ERP Systems","IT Governance","Knowledge Management","Systems Integration","Research Methods"],
+    400: ["Strategic IS Management","Decision Support Systems","Advanced BI","IS Security","Digital Transformation","Final Year Project"],
+  },
+  "B.Sc. Information Technology": {
+    100: ["Computer Networks","Web Development Basics","IT Infrastructure","Introduction to Programming","Communication Skills","Mathematics for IT"],
+    200: ["System Administration","Network Administration","Web Technologies","Database Management","IT Security","Cloud Fundamentals"],
+    300: ["Cloud Computing","Virtualization","Mobile Computing","IT Service Management","Network Design","Research Methods"],
+    400: ["Advanced Cloud Computing","IT Auditing","Data Centre Management","IT Project Management","Emerging Technologies","Final Year Project"],
+  },
+  "B.Sc. Software Engineering": {
+    100: ["Introduction to Software Engineering","Programming Fundamentals","Mathematics for SE","Computer Architecture","Communication Skills","Web Basics"],
+    200: ["Software Design","Object-Oriented Analysis","Software Testing","Data Structures","Database Systems","Agile Methods"],
+    300: ["Software Project Management","System Architecture","DevOps","Software Quality Assurance","Mobile App Development","Research Methods"],
+    400: ["Advanced Software Architecture","Cloud-Native Development","Software Security","AI in Software Engineering","Capstone Project","Final Year Project"],
+  },
+  "B.Tech. Civil Engineering": {
+    100: ["Engineering Mathematics","Engineering Drawing","Mechanics","Introduction to Civil Engineering","Chemistry","Physics"],
+    200: ["Structural Analysis","Fluid Mechanics","Soil Mechanics","Engineering Materials","Surveying","Engineering Geology"],
+    300: ["Reinforced Concrete Design","Transportation Engineering","Water Resources","Geotechnical Engineering","Highway Engineering","Research Methods"],
+    400: ["Steel Structures","Construction Management","Environmental Engineering","Bridge Design","Foundation Engineering","Final Year Project"],
+    500: ["Advanced Structural Engineering","Project Planning","Advanced Geotechnics","Infrastructure Management","Final Year Project","Engineering Ethics"],
+  },
+  "B.Tech. Electrical and Electronic Engineering": {
+    100: ["Engineering Mathematics","Circuit Theory","Engineering Drawing","Physics for Engineers","Chemistry","Computer Programming"],
+    200: ["Electromagnetics","Digital Electronics","Power Systems I","Control Theory","Electronic Devices","Signals and Systems"],
+    300: ["Power Systems II","Microprocessors","Communication Systems","Control Systems","Electrical Machines","Research Methods"],
+    400: ["Power Electronics","Renewable Energy Systems","Signal Processing","VLSI Design","Instrumentation","Final Year Project"],
+    500: ["Advanced Power Systems","Smart Grid","Embedded Systems","Advanced Control Systems","Final Year Project","Engineering Ethics"],
+  },
+  "B.Tech. Mechanical Engineering": {
+    100: ["Engineering Mathematics","Engineering Drawing","Mechanics","Thermodynamics I","Chemistry","Computer Programming"],
+    200: ["Fluid Mechanics","Engineering Materials","Machine Design I","Heat Transfer","Manufacturing Processes","Dynamics"],
+    300: ["Thermodynamics II","Machine Design II","Control Engineering","Finite Element Analysis","Industrial Engineering","Research Methods"],
+    400: ["Advanced Manufacturing","Robotics","Automotive Engineering","Energy Systems","Maintenance Engineering","Final Year Project"],
+    500: ["Advanced Thermodynamics","CAD/CAM","Advanced Machine Design","Project Management","Final Year Project","Engineering Ethics"],
+  },
+  "B.Tech. Building": {
+    100: ["Building Materials","Construction Technology I","Building Drawing","Mathematics","Physics","Introduction to Building"],
+    200: ["Construction Technology II","Building Services","Structural Mechanics","Estimating and Costing","Surveying","Building Law"],
+    300: ["Project Management","Quantity Surveying","Advanced Structural Analysis","Building Maintenance","Facilities Management","Research Methods"],
+    400: ["Building Economics","Construction Management","Building Information Modelling","Contract Administration","Advanced QS","Final Year Project"],
+  },
+  "B.Tech. Environmental Management": {
+    100: ["Introduction to Environmental Management","Environmental Biology","Chemistry for Environment","Earth Sciences","Mathematics","Communication Skills"],
+    200: ["Environmental Pollution","Waste Management","Environmental Law","Ecology","GIS Fundamentals","Statistics"],
+    300: ["Environmental Impact Assessment","Climate Change Studies","Environmental Policy","Sustainable Development","Environmental Economics","Research Methods"],
+    400: ["Advanced EIA","Corporate Environmental Management","Green Technology","Environmental Auditing","International Environmental Law","Final Year Project"],
+  },
+  "B.Tech. Estate Management": {
+    100: ["Introduction to Estate Management","Property Law","Land Economics","Building Technology","Mathematics","Communication Skills"],
+    200: ["Property Valuation I","Estate Agency","Property Development","Town Planning Law","Building Services","Statistics"],
+    300: ["Property Valuation II","Property Investment","Facilities Management","Real Estate Finance","Property Management","Research Methods"],
+    400: ["Advanced Valuation","International Property","Corporate Real Estate","Property Portfolio Management","Real Estate Economics","Final Year Project"],
+  },
+  "B.Tech. Survey and Geo-Informatics": {
+    100: ["Land Surveying I","Mathematics for Survey","Physics","Engineering Drawing","Introduction to Geo-Informatics","Communication Skills"],
+    200: ["Land Surveying II","Geodesy","Remote Sensing","GIS Fundamentals","Cartography","Statistics"],
+    300: ["Advanced GIS","Photogrammetry","Hydrographic Survey","GPS Technology","Engineering Survey","Research Methods"],
+    400: ["Cadastral Survey","Advanced Remote Sensing","Geospatial Data Analysis","Land Administration","Satellite Geodesy","Final Year Project"],
+  },
+  "B.Tech. Urban and Regional Planning": {
+    100: ["Planning Theory","Introduction to Urban Studies","Urban Geography","Drawing for Planners","Sociology","Communication Skills"],
+    200: ["Urban Design","Housing Studies","Transport Planning","Land Use Planning","Environmental Planning","Statistics"],
+    300: ["Regional Development","Planning Law","Urban Economics","GIS for Planning","Infrastructure Planning","Research Methods"],
+    400: ["Strategic Planning","Urban Renewal","Rural Development","Planning Administration","Sustainable Urban Development","Final Year Project"],
+  },
+  "B.Sc. Biology": {
+    100: ["Cell Biology","General Botany","General Zoology","Chemistry for Biology","Mathematics","Communication Skills"],
+    200: ["Genetics","Microbiology","Ecology","Biochemistry","Plant Physiology","Statistics for Biology"],
+    300: ["Molecular Biology","Parasitology","Immunology","Evolution","Environmental Biology","Research Methods"],
+    400: ["Biotechnology","Advanced Genetics","Conservation Biology","Bioinformatics","Marine Biology","Final Year Project"],
+  },
+  "B.Sc. Chemistry": {
+    100: ["Organic Chemistry I","Inorganic Chemistry I","Physical Chemistry I","Mathematics","Laboratory Techniques","Communication Skills"],
+    200: ["Organic Chemistry II","Inorganic Chemistry II","Physical Chemistry II","Analytical Chemistry","Industrial Chemistry","Statistics"],
+    300: ["Biochemistry","Computational Chemistry","Spectroscopy","Environmental Chemistry","Polymer Chemistry","Research Methods"],
+    400: ["Advanced Organic Chemistry","Medicinal Chemistry","Electrochemistry","Chemical Thermodynamics","Green Chemistry","Final Year Project"],
+  },
+  "B.Sc. Mathematics": {
+    100: ["Calculus I","Linear Algebra I","Logic and Set Theory","Statistics I","Mechanics","Communication Skills"],
+    200: ["Calculus II","Linear Algebra II","Differential Equations","Statistics II","Abstract Algebra","Numerical Methods"],
+    300: ["Real Analysis","Complex Analysis","Topology","Mathematical Modelling","Probability Theory","Research Methods"],
+    400: ["Functional Analysis","Number Theory","Operations Research","Applied Mathematics","Advanced Statistics","Final Year Project"],
+  },
+  "B.Sc. Physics": {
+    100: ["Classical Mechanics","Electromagnetism I","Mathematics for Physics","Thermodynamics I","Laboratory Physics","Communication Skills"],
+    200: ["Electromagnetism II","Thermodynamics II","Quantum Mechanics I","Electronics","Optics","Statistics for Physics"],
+    300: ["Quantum Mechanics II","Nuclear Physics","Solid State Physics","Statistical Mechanics","Mathematical Physics","Research Methods"],
+    400: ["Advanced Quantum Mechanics","Astrophysics","Laser Physics","Plasma Physics","Computational Physics","Final Year Project"],
+  },
+};
+
 const getUsers    = () => JSON.parse(localStorage.getItem("ecl_users")||"[]");
 const saveUsers   = u  => localStorage.setItem("ecl_users", JSON.stringify(u));
 const getHistory  = uid => JSON.parse(localStorage.getItem(`ecl_h_${uid||"guest"}`)||"[]");
@@ -303,7 +498,7 @@ function HomePage({ setPage, onTogglePanel }) {
   const features = [
     {icon:"📝",title:"Prediction Quiz",desc:"Write predictions for exam questions and get instant AI-powered feedback with model answers.",badge:"AI Graded",action:()=>setPage("quiz")},
     {icon:"🗂️",title:"Smart Flashcards",desc:"Generate flashcards from any topic. Click to reveal answers and test your recall.",badge:"Spaced Learning",action:()=>setPage("flashcards")},
-    {icon:"🗓️",title:"Study Planner",desc:"Get a personalised daily study schedule based on your faculty, level, and available hours.",badge:"AI Scheduled",action:()=>setPage("planner")},
+    {icon:"🗓️",title:"Study Planner",desc:"Track tasks on a weekly board, monitor your study streak, run a session timer, and get an AI-generated daily schedule.",badge:"AI Scheduled",action:()=>setPage("planner")},
     {icon:"📊",title:"Progress Dashboard",desc:"Track your quiz scores, performance trends, and identify your weakest topics over time.",badge:"Analytics",action:()=>setPage("dashboard")},
     {icon:"🖼️",title:"Upload & Analyse",desc:"Upload lecture notes, diagrams, or past papers and get predicted questions from them instantly.",badge:"Image + Doc AI",action:()=>onTogglePanel("upload")},
     {icon:"💬",title:"Study Chat",desc:"Chat in real-time with classmates in the same faculty and level study room.",badge:"Group Learning",action:()=>onTogglePanel("chat")},
@@ -373,24 +568,29 @@ function ApiError({ error, onSetupKey }) {
    ============================================================ */
 function QuizPage({ user, setPage }) {
   const [stage, setStage] = useState("intro");
-  const [fac, setFac]   = useState("");
-  const [dept, setDept] = useState("");
-  const [lvl, setLvl]   = useState("");
+  const [fac, setFac]     = useState("");
+  const [dept, setDept]   = useState("");
+  const [lvl, setLvl]     = useState("");
+  const [course, setCourse] = useState("");
   const [questions, setQuestions] = useState([]);
-  const [qi, setQi]     = useState(0);
-  const [answer, setAnswer]   = useState("");
+  const [qi, setQi]       = useState(0);
+  const [answer, setAnswer]     = useState("");
   const [feedback, setFeedback] = useState(null);
   const [checking, setChecking] = useState(false);
   const [scores, setScores]     = useState([]);
   const [responses, setResponses] = useState([]);
-  const [apiError, setApiError] = useState("");
+  const [apiError, setApiError]   = useState("");
 
   const steps = [
     {label:"① Faculty",    done:!!fac,  active:!fac},
     {label:"② Department", done:!!dept, active:!!fac&&!dept},
     {label:"③ Level",      done:!!lvl,  active:!!dept&&!lvl},
-    {label:"④ Start",      done:false,  active:!!lvl},
+    {label:"④ Course",     done:!!course, active:!!lvl&&!course},
+    {label:"⑤ Start",      done:false,  active:!!course},
   ];
+
+  // Available courses for selected dept+level
+  const availableCourses = (dept && lvl && COURSE_DATA[dept] && COURSE_DATA[dept][parseInt(lvl)]) || [];
 
   async function startQuiz() {
     setStage("loading"); setApiError("");
@@ -400,11 +600,12 @@ function QuizPage({ user, setPage }) {
 - Faculty: ${FACULTIES[fac].name} (${fac})
 - Programme: ${dept}
 - Level: ${lvl} (Year ${lvl.toString()[0]}, Nigerian university)
+- Course / Subject: ${course}
 
 Return ONLY a valid JSON array with this exact structure (no markdown, no backticks):
 [{"question":"...","topic":"short topic name","modelAnswer":"2-4 sentence comprehensive answer"}]
 
-Questions must require explanation and analysis appropriate for Level ${lvl} ${dept} students.`
+Questions must be specifically about "${course}" and must require explanation and analysis appropriate for Level ${lvl} ${dept} students.`
       );
       if (!Array.isArray(qs) || qs.length === 0) throw new Error("No questions generated");
       setQuestions(qs);
@@ -446,7 +647,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
     if (qi+1 >= questions.length) {
       const finalScores = [...scores];
       const h = getHistory(user?.id);
-      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl,
+      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl, course,
         score:finalScores.reduce((a,b)=>a+b,0), max:questions.length*2,
         pct:Math.round(finalScores.reduce((a,b)=>a+b,0)/(questions.length*2)*100)});
       saveHistory(user?.id, h.slice(0,20));
@@ -462,7 +663,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
     if (qi+1 >= questions.length) {
       const finalScores = [...scores, 0];
       const h = getHistory(user?.id);
-      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl,
+      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl, course,
         score:finalScores.reduce((a,b)=>a+b,0), max:questions.length*2,
         pct:Math.round(finalScores.reduce((a,b)=>a+b,0)/(questions.length*2)*100)});
       saveHistory(user?.id, h.slice(0,20));
@@ -484,7 +685,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
       {stage==="intro" && (
         <>
           <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:6}}>Prediction Quiz</h2>
-          <p style={{color:"var(--muted)",fontSize:"1rem",marginBottom:16,lineHeight:1.6}}>Select your faculty, department and level to receive AI-generated exam questions.</p>
+          <p style={{color:"var(--muted)",fontSize:"1rem",marginBottom:16,lineHeight:1.6}}>Select your faculty, department, level and specific course to receive AI-generated exam questions tailored to that subject.</p>
 
           {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
 
@@ -498,7 +699,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
           <div className="sec-label">Select Your Faculty</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(138px,1fr))",gap:9,marginBottom:22}}>
             {Object.entries(FACULTIES).map(([key,f])=>(
-              <button key={key} onClick={()=>{setFac(key);setDept("");setLvl("");}} className="btn"
+              <button key={key} onClick={()=>{setFac(key);setDept("");setLvl("");setCourse("");}} className="btn"
                 style={{background:fac===key?"var(--ink)":"#fff",border:`1.5px solid ${fac===key?"var(--ink)":"var(--border)"}`,color:fac===key?"var(--paper)":"var(--ink)",padding:"12px 8px",fontSize:".87rem",lineHeight:1.3,boxShadow:fac===key?"3px 3px 0 var(--border)":"none"}}>
                 <span style={{display:"block",fontSize:"1.37rem",marginBottom:5}}>{f.icon}</span>
                 {f.name.split(" ").slice(2).join(" ")||f.name}
@@ -510,22 +711,41 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
             <div style={{display:"flex",gap:12,marginBottom:18,flexWrap:"wrap"}} className="anim-fadeUp">
               <div style={{flex:1,minWidth:170}}>
                 <label className="field-label">Department / Programme</label>
-                <select className="field-input" value={dept} onChange={e=>setDept(e.target.value)}>
+                <select className="field-input" value={dept} onChange={e=>{setDept(e.target.value);setLvl("");setCourse("");}}>
                   <option value="">— Select department —</option>
                   {FACULTIES[fac].depts.map(d=><option key={d} value={d}>{d}</option>)}
                 </select>
               </div>
               <div style={{flex:1,minWidth:170}}>
                 <label className="field-label">Level</label>
-                <select className="field-input" value={lvl} onChange={e=>setLvl(e.target.value)}>
+                <select className="field-input" value={lvl} onChange={e=>{setLvl(e.target.value);setCourse("");}}>
                   <option value="">— Select level —</option>
                   {FACULTIES[fac].levels.map(l=><option key={l} value={l}>Level {l}</option>)}
                 </select>
               </div>
             </div>
           )}
+          {dept && lvl && availableCourses.length > 0 && (
+            <div style={{marginBottom:18}} className="anim-fadeUp">
+              <label className="field-label">Course / Subject</label>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
+                {availableCourses.map(c=>(
+                  <button key={c} onClick={()=>setCourse(c)} className="btn"
+                    style={{background:course===c?"var(--accent)":"#fff",border:`1.5px solid ${course===c?"var(--accent)":"var(--border)"}`,color:course===c?"#fff":"var(--ink)",padding:"10px 12px",fontSize:".87rem",textAlign:"left",lineHeight:1.3,boxShadow:course===c?"2px 2px 0 rgba(200,64,30,.2)":"none",transition:"all .12s"}}>
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {dept && lvl && availableCourses.length === 0 && (
+            <div style={{marginBottom:18,padding:"12px 16px",background:"var(--cream)",border:"1px solid var(--border)",fontSize:".89rem",color:"var(--muted)"}} className="anim-fadeUp">
+              No course list available for this combination — the AI will generate general questions for <strong>{dept} Level {lvl}</strong>.
+            </div>
+          )}
           <div style={{textAlign:"center",paddingTop:6}}>
-            <button className="btn btn-dark" onClick={startQuiz} disabled={!fac||!dept||!lvl} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Start Quiz →</button>
+            <button className="btn btn-dark" onClick={startQuiz} disabled={!fac||!dept||!lvl||(availableCourses.length>0&&!course)} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Start Quiz →</button>
+            {availableCourses.length>0 && !course && lvl && dept && <div className="mono" style={{fontSize:".67rem",color:"var(--muted)",marginTop:8,letterSpacing:".06em"}}>Please select a course above to continue</div>}
           </div>
         </>
       )}
@@ -549,6 +769,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
             <div style={{display:"flex",gap:8,marginBottom:15,flexWrap:"wrap"}}>
               <span className="mono" style={{fontSize:".73rem",background:"var(--ink)",color:"var(--paper)",padding:"2px 9px",letterSpacing:".1em",textTransform:"uppercase"}}>Q {String(qi+1).padStart(2,"0")}</span>
               <span className="mono" style={{fontSize:".70rem",color:"var(--muted)",border:"1px solid var(--border)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>{q.topic}</span>
+              {course && <span className="mono" style={{fontSize:".66rem",color:"rgba(184,134,11,.9)",border:"1px solid rgba(184,134,11,.3)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>📚 {course}</span>}
               <span className="mono" style={{fontSize:".66rem",color:"rgba(76,175,80,.8)",border:"1px solid rgba(76,175,80,.3)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>⚡ Groq AI</span>
             </div>
             <p className="serif" style={{fontSize:"1.35rem",lineHeight:1.55,marginBottom:20}}>{q.question}</p>
@@ -605,7 +826,7 @@ Scoring: 2=strong answer covering key points, 1=partial credit with some correct
             ))}
           </div>
           <div style={{textAlign:"center"}}>
-            <button className="btn btn-dark" onClick={()=>{setStage("intro");setFac("");setDept("");setLvl("");}} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Try Another Quiz →</button>
+            <button className="btn btn-dark" onClick={()=>{setStage("intro");setFac("");setDept("");setLvl("");setCourse("");}} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Try Another Quiz →</button>
           </div>
         </div>
       )}
@@ -659,8 +880,8 @@ function DashboardPage({ user }) {
         <div key={i} style={{display:"flex",alignItems:"center",gap:14,padding:"12px 16px",background:"#fff",border:"1.5px solid var(--border)",marginBottom:8}}>
           <div className="mono" style={{fontSize:".68rem",color:"var(--muted)",minWidth:80}}>{h.date}</div>
           <div style={{flex:1}}>
-            <div style={{fontSize:".93rem",fontWeight:500}}>{h.dept||h.fac}</div>
-            <div className="mono" style={{fontSize:".66rem",color:"var(--muted)",marginTop:1}}>{h.fac} · Level {h.lvl}</div>
+            <div style={{fontSize:".93rem",fontWeight:500}}>{h.course||h.dept||h.fac}</div>
+            <div className="mono" style={{fontSize:".66rem",color:"var(--muted)",marginTop:1}}>{h.dept||h.fac} · Level {h.lvl}</div>
           </div>
           <div className="serif" style={{fontSize:"1.37rem",fontWeight:700,color:h.pct>=70?"var(--correct)":h.pct>=40?"var(--gold)":"var(--wrong)"}}>{h.pct}%</div>
         </div>
@@ -764,13 +985,214 @@ Make questions exam-relevant and answers educational and thorough.`
 }
 
 /* ============================================================
-   STUDY PLANNER — uses Groq
+   STUDY STREAK HOOK
+   ============================================================ */
+function useStudyStreak() {
+  const [streak, setStreak] = useState(() => {
+    const s = parseInt(localStorage.getItem("ecl_streak") || "0");
+    const last = localStorage.getItem("ecl_lastStudyDate");
+    const today = new Date().toDateString();
+    if (last !== today) {
+      const updated = s + 1;
+      localStorage.setItem("ecl_streak", updated);
+      localStorage.setItem("ecl_lastStudyDate", today);
+      return updated;
+    }
+    return s;
+  });
+  return streak;
+}
+
+/* ============================================================
+   STUDY TIMER COMPONENT
+   ============================================================ */
+function StudyTimer() {
+  const [seconds, setSeconds] = useState(() => parseInt(localStorage.getItem("ecl_timerSeconds") || "0"));
+  const [running, setRunning] = useState(false);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (running) {
+      intervalRef.current = setInterval(() => {
+        setSeconds(s => {
+          const next = s + 1;
+          localStorage.setItem("ecl_timerSeconds", next);
+          return next;
+        });
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [running]);
+
+  function reset() {
+    setRunning(false);
+    setSeconds(0);
+    localStorage.setItem("ecl_timerSeconds", "0");
+  }
+
+  const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+  const s = (seconds % 60).toString().padStart(2, "0");
+
+  return (
+    <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:"20px 24px",boxShadow:"3px 3px 0 var(--cream)"}}>
+      <div className="sec-label" style={{marginBottom:12}}>Study Timer</div>
+      <div className="serif" style={{fontSize:"3rem",fontWeight:700,letterSpacing:"0.05em",color:"var(--ink)",marginBottom:14,fontVariantNumeric:"tabular-nums"}}>
+        {h}:{m}:{s}
+      </div>
+      <div style={{display:"flex",gap:8}}>
+        <button className={`btn ${running ? "btn-ghost" : "btn-dark"}`} onClick={() => setRunning(r => !r)} style={{padding:"8px 20px",fontSize:".91rem"}}>
+          {running ? "⏸ Pause" : "▶ Start"}
+        </button>
+        <button className="btn btn-ghost" onClick={reset} style={{padding:"8px 16px",fontSize:".91rem"}}>↺ Reset</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   WEEKLY TASK PLANNER COMPONENT
+   ============================================================ */
+const DAYS_OF_WEEK = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function WeeklyTaskPlanner() {
+  const [tasks, setTasks] = useState(() => JSON.parse(localStorage.getItem("ecl_tasks") || "[]"));
+  const [newTask, setNewTask] = useState("");
+  const [taskDay, setTaskDay] = useState("Monday");
+  const [dragIdx, setDragIdx] = useState(null);
+
+  function saveTasks(t) {
+    setTasks(t);
+    localStorage.setItem("ecl_tasks", JSON.stringify(t));
+  }
+
+  function addTask() {
+    if (!newTask.trim()) return;
+    saveTasks([...tasks, { name: newTask.trim(), day: taskDay, completed: false, id: Date.now() }]);
+    setNewTask("");
+  }
+
+  function toggleTask(id) {
+    saveTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  }
+
+  function deleteTask(id) {
+    saveTasks(tasks.filter(t => t.id !== id));
+  }
+
+  function onDragStart(idx) { setDragIdx(idx); }
+
+  function onDrop(targetIdx) {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    const updated = [...tasks];
+    const [moved] = updated.splice(dragIdx, 1);
+    updated.splice(targetIdx, 0, moved);
+    saveTasks(updated);
+    setDragIdx(null);
+  }
+
+  const completedCount = tasks.filter(t => t.completed).length;
+  const totalCount = tasks.length;
+
+  return (
+    <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:"20px 24px",boxShadow:"3px 3px 0 var(--cream)"}}>
+      <div className="sec-label" style={{marginBottom:12}}>Weekly Task Planner</div>
+
+      {/* Add task row */}
+      <div style={{display:"flex",gap:8,marginBottom:18,flexWrap:"wrap"}}>
+        <input
+          className="field-input"
+          value={newTask}
+          onChange={e => setNewTask(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && addTask()}
+          placeholder="Add a study task…"
+          style={{flex:2,minWidth:140}}
+        />
+        <select className="field-input" value={taskDay} onChange={e => setTaskDay(e.target.value)} style={{flex:1,minWidth:110}}>
+          {DAYS_OF_WEEK.map(d => <option key={d}>{d}</option>)}
+        </select>
+        <button className="btn btn-dark" onClick={addTask} style={{padding:"10px 18px",fontSize:".91rem"}}>+ Add</button>
+      </div>
+
+      {totalCount > 0 && (
+        <div style={{marginBottom:14}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+            <span className="mono" style={{fontSize:".67rem",color:"var(--muted)",letterSpacing:".08em",textTransform:"uppercase"}}>{completedCount}/{totalCount} tasks complete</span>
+          </div>
+          <div style={{height:6,background:"var(--cream)",borderRadius:3,overflow:"hidden"}}>
+            <div style={{height:"100%",background:"var(--correct)",width:`${totalCount ? (completedCount/totalCount)*100 : 0}%`,transition:"width .4s ease",borderRadius:3}}/>
+          </div>
+        </div>
+      )}
+
+      {/* Weekly grid */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(110px,1fr))",gap:8,marginBottom:18}}>
+        {DAYS_OF_WEEK.map(day => {
+          const dayTasks = tasks.filter(t => t.day === day);
+          return (
+            <div key={day} style={{background:"var(--cream)",border:"1px solid var(--border)",borderRadius:1,padding:"8px 10px",minHeight:60}}>
+              <div className="mono" style={{fontSize:".64rem",letterSpacing:".1em",textTransform:"uppercase",color:"var(--muted)",marginBottom:5,fontWeight:600}}>{day.slice(0,3)}</div>
+              {dayTasks.length === 0
+                ? <div style={{fontSize:".74rem",color:"var(--border)",fontStyle:"italic"}}>—</div>
+                : dayTasks.map(t => (
+                  <div key={t.id} style={{fontSize:".78rem",marginBottom:3,color:t.completed?"var(--correct)":"var(--ink)",textDecoration:t.completed?"line-through":"none",wordBreak:"break-word"}}>
+                    {t.completed ? "✓ " : "• "}{t.name}
+                  </div>
+                ))
+              }
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Drag-and-drop task list */}
+      {tasks.length > 0 && (
+        <>
+          <div className="mono" style={{fontSize:".66rem",letterSpacing:".1em",textTransform:"uppercase",color:"var(--muted)",marginBottom:8}}>All Tasks — Drag to reorder</div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {tasks.map((t, i) => (
+              <div key={t.id}
+                draggable
+                onDragStart={() => onDragStart(i)}
+                onDragOver={e => e.preventDefault()}
+                onDrop={() => onDrop(i)}
+                style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",background:t.completed?"#f0faf4":"#fff",border:`1.5px solid ${t.completed?"#b7dfc9":"var(--border)"}`,cursor:"grab",transition:"all .15s",borderRadius:1}}>
+                <span style={{color:"var(--border)",fontSize:".85rem",cursor:"grab"}}>⠿</span>
+                <div
+                  onClick={() => toggleTask(t.id)}
+                  style={{width:16,height:16,border:`1.5px solid ${t.completed?"var(--correct)":"var(--border)"}`,borderRadius:2,background:t.completed?"var(--correct)":"transparent",cursor:"pointer",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:".72rem",transition:"all .15s"}}>
+                  {t.completed ? "✓" : ""}
+                </div>
+                <span style={{flex:1,fontSize:".92rem",textDecoration:t.completed?"line-through":"none",color:t.completed?"var(--muted)":"var(--ink)"}}>{t.name}</span>
+                <span className="mono" style={{fontSize:".64rem",color:"var(--muted)",padding:"1px 7px",background:"var(--cream)",letterSpacing:".08em"}}>{t.day.slice(0,3)}</span>
+                <button onClick={() => deleteTask(t.id)} style={{background:"none",border:"none",color:"var(--border)",cursor:"pointer",fontSize:".95rem",padding:"0 2px",lineHeight:1}} title="Delete">✕</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {tasks.length === 0 && (
+        <div style={{textAlign:"center",padding:"28px 20px",color:"var(--muted)"}}>
+          <span style={{fontSize:"2rem",display:"block",marginBottom:8,opacity:.4}}>📋</span>
+          <p style={{fontSize:".91rem",lineHeight:1.6}}>No tasks yet. Add your first study task above!</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   STUDY PLANNER PAGE — AI Plan + Timer + Streak + Weekly Tasks
    ============================================================ */
 function PlannerPage({ setPage }) {
   const [form, setForm] = useState({fac:"",lvl:"",date:"",hours:"4",weak:""});
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
+  const streak = useStudyStreak();
 
   async function generate() {
     if (!form.fac||!form.lvl) { alert("Please select faculty and level."); return; }
@@ -796,15 +1218,42 @@ Include 3-4 sessions per day. Last day should be full revision only.`
     setLoading(false);
   }
 
+  const streakWidth = Math.min(streak * 10, 100);
+
   return (
     <div className="anim-fadeUp">
       <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:4}}>Study Planner</h2>
-      <p style={{color:"var(--muted)",fontSize:".98rem",marginBottom:16}}>Get a personalised AI-generated study schedule.</p>
+      <p style={{color:"var(--muted)",fontSize:".98rem",marginBottom:20}}>AI study schedules, task tracking, streak monitoring &amp; timer — all in one place.</p>
 
+      {/* Streak + Timer row */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:22}}>
+        {/* Streak card */}
+        <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:"20px 24px",boxShadow:"3px 3px 0 var(--cream)"}}>
+          <div className="sec-label" style={{marginBottom:10}}>Study Streak 🔥</div>
+          <div className="serif" style={{fontSize:"2.5rem",fontWeight:700,lineHeight:1,marginBottom:6,color:"var(--ink)"}}>
+            {streak} <span style={{fontSize:"1.1rem",fontWeight:400,color:"var(--muted)"}}>day{streak!==1?"s":""}</span>
+          </div>
+          <div style={{height:8,background:"var(--cream)",borderRadius:4,overflow:"hidden",marginBottom:6}}>
+            <div style={{height:"100%",background:"#ff9800",width:`${streakWidth}%`,transition:"width .5s ease",borderRadius:4}}/>
+          </div>
+          <div className="mono" style={{fontSize:".66rem",color:"var(--muted)",letterSpacing:".08em",textTransform:"uppercase"}}>
+            {streak < 10 ? `${10 - streak} more day${10-streak!==1?"s":""} to hit 10` : "🏆 10-day goal reached!"}
+          </div>
+        </div>
+        {/* Timer card */}
+        <StudyTimer/>
+      </div>
+
+      {/* Weekly Task Planner */}
+      <div style={{marginBottom:22}}>
+        <WeeklyTaskPlanner/>
+      </div>
+
+      {/* AI Schedule Generator */}
       {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
 
       <div className="card" style={{marginBottom:22}}>
-        <h3 className="serif" style={{fontSize:"1.25rem",marginBottom:16}}>Tell us about your study needs</h3>
+        <h3 className="serif" style={{fontSize:"1.25rem",marginBottom:16}}>AI Study Schedule Generator</h3>
         <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:14}}>
           <div style={{flex:1,minWidth:160}}>
             <label className="field-label">Faculty</label>
@@ -840,14 +1289,17 @@ Include 3-4 sessions per day. Last day should be full revision only.`
           </button>
         </div>
       </div>
+
       {loading && (
         <div style={{textAlign:"center",padding:"60px 20px"}}>
           <div style={{width:34,height:34,border:"3px solid var(--border)",borderTopColor:"var(--accent)",borderRadius:"50%",animation:"spin .8s linear infinite",margin:"0 auto 16px"}}/>
           <p className="serif" style={{fontStyle:"italic",color:"var(--muted)"}}>Building your study plan…</p>
         </div>
       )}
+
       {plan && (
         <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:22}} className="anim-fadeUp">
+          <div className="sec-label" style={{marginBottom:16}}>Your AI-Generated Schedule</div>
           {plan.map((d,i)=>(
             <div key={i} style={{marginBottom:18}}>
               <div className="mono" style={{fontSize:".75rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--accent)",marginBottom:8,paddingBottom:6,borderBottom:"1px solid var(--border)"}}>{d.day}</div>
@@ -889,6 +1341,9 @@ function InfoPage() {
     ]},
     { title:"4. Time Management & Collaboration", cards:[
       {icon:"🗓️",h:"AI Study Planner",p:"Provides a structured timetable across multiple days, balancing strong and weak subjects, with session durations built in."},
+      {icon:"✅",h:"Weekly Task Planner",p:"Add tasks assigned to specific days. Drag and drop to reorder. Check off tasks as you complete them and track weekly progress."},
+      {icon:"🔥",h:"Study Streak Tracker",p:"Tracks consecutive study days with a visual progress bar toward a 10-day goal — keeps you motivated and consistent."},
+      {icon:"⏱️",h:"Study Timer",p:"Built-in stopwatch for tracking session length. Start, pause and reset — timer persists across page refreshes."},
       {icon:"💬",h:"Faculty & Level Study Rooms",p:"The group chat connects you with students in the same faculty and level. Share notes, tips, and discuss topics in real time."},
       {icon:"✅",h:"Reliable AI Outputs",p:"All AI responses are grounded in your faculty, programme, and level — reducing generic or inaccurate answers."},
     ]},
