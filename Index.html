@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ECLIPSE LEARN — Academic Study &amp; Exam Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#1a1208;--paper:#f5f0e8;--cream:#ede7d3;--accent:#c8401e;--gold:#b8860b;--muted:#7a6f5e;--correct:#2d6a4f;--wrong:#c8401e;--border:#c9bfa8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;font-size:16.24px;background:var(--paper);color:var(--ink);}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");}
+#root{height:100%;display:flex;flex-direction:column;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.anim-fadeIn{animation:fadeIn .3s ease both;}
+.anim-fadeUp{animation:fadeUp .3s ease both;}
+.anim-slideUp{animation:slideUp .4s cubic-bezier(.34,1.56,.64,1) both;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.serif{font-family:'Playfair Display',serif;}
+.mono{font-family:'DM Mono',monospace;}
+.btn{font-family:'DM Sans',sans-serif;font-size:.98rem;font-weight:500;padding:10px 20px;cursor:pointer;border-radius:1px;transition:all .15s;letter-spacing:.02em;border:none;}
+.btn-dark{background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);}
+.btn-dark:hover:not(:disabled){background:#2d1e0a;box-shadow:3px 3px 0 var(--border);}
+.btn-dark:disabled{opacity:.3;cursor:default;}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--ink);}
+.btn-red{background:var(--accent);color:#fff;border:1.5px solid var(--accent);}
+.btn-red:hover:not(:disabled){background:#a33318;box-shadow:3px 3px 0 rgba(200,64,30,.18);}
+.btn-red:disabled{opacity:.35;cursor:default;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:1px;padding:28px 32px;box-shadow:3px 3px 0 var(--cream);}
+.sec-label{font-family:'DM Mono',monospace;font-size:.71rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.28);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px;}
+.chip{display:inline-block;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 9px;margin-top:6px;}
+.field-label{display:block;font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.field-input{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:1px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.96rem;color:var(--ink);outline:none;transition:border-color .15s;}
+.field-input:focus{border-color:var(--ink);}
+.field-input::placeholder{color:var(--border);}
+select.field-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a6f5e'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;}
+textarea.field-input{resize:vertical;min-height:110px;line-height:1.6;}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ============================================================
+   GROQ API CONFIG
+   ============================================================ */
+const GROQ_MODEL = "llama-3.3-70b-versatile"; // Latest fast model
+const GROQ_API_KEY = "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";
+
+// Always return the hardcoded key
+const getGroqKey = () => GROQ_API_KEY;
+const saveGroqKey = () => {};
+
+/* ============================================================
+   GROQ API HELPER — replaces Anthropic callAI
+   ============================================================ */
+async function callGroq(prompt, systemPrompt = "") {
+  const apiKey = getGroqKey();
+  if (!apiKey) throw new Error("NO_API_KEY");
+
+  const messages = [];
+  if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
+  messages.push({ role: "user", content: prompt });
+
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      max_tokens: 2000,
+      temperature: 0.7,
+      messages
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 401) throw new Error("INVALID_KEY");
+    throw new Error(err?.error?.message || `Groq API error ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
+
+/* ============================================================
+   GROQ JSON HELPER — parses JSON from Groq response
+   ============================================================ */
+async function callGroqJSON(prompt) {
+  const system = `You are an academic exam preparation AI. Always respond with ONLY valid JSON — no markdown, no backticks, no explanation before or after. Pure JSON only.`;
+  const text = await callGroq(prompt, system);
+  // Strip any accidental markdown fences
+  const clean = text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+  try {
+    return JSON.parse(clean);
+  } catch(e) {
+    // Try to extract JSON array or object
+    const arrMatch = clean.match(/\[[\s\S]*\]/);
+    const objMatch = clean.match(/\{[\s\S]*\}/);
+    if (arrMatch) return JSON.parse(arrMatch[0]);
+    if (objMatch) return JSON.parse(objMatch[0]);
+    throw new Error("Could not parse JSON from AI response");
+  }
+}
+
+/* ============================================================
+   DATA
+   ============================================================ */
+const FACULTIES = {
+  FAMSS: { name:"Faculty of Arts, Management and Social Sciences", levels:[100,200,300,400], icon:"🎭",
+    depts:["B.A. Arabic","B.A. English","B.A. History","B.Sc. Accounting","B.Sc. Economics","B.Sc. Management","B.Sc. Transport and Logistics Management","B.Sc. Criminology and Security Studies","B.Sc. Geography","B.Sc. International Relations","B.Sc. Peace Studies and Conflict Resolution","B.Sc. Political Science","B.Sc. Psychology","B.Sc. Sociology"]},
+  FCOM: { name:"Faculty of Computing", levels:[100,200,300,400], icon:"💻",
+    depts:["B.Sc. Computer Science","B.Sc. Cyber Security","B.Sc. Information System","B.Sc. Information Technology","B.Sc. Software Engineering"]},
+  FENG: { name:"Faculty of Engineering", levels:[100,200,300,400,500], icon:"⚙️",
+    depts:["B.Tech. Civil Engineering","B.Tech. Electrical and Electronic Engineering","B.Tech. Mechanical Engineering"]},
+  FEVS: { name:"Faculty of Environmental Sciences", levels:[100,200,300,400], icon:"🏗️",
+    depts:["B.Tech. Building","B.Tech. Environmental Management","B.Tech. Estate Management","B.Tech. Survey and Geo-Informatics","B.Tech. Urban and Regional Planning"]},
+  FNAS: { name:"Faculty of Natural and Applied Sciences", levels:[100,200,300,400], icon:"🔬",
+    depts:["B.Sc. Biology","B.Sc. Chemistry","B.Sc. Mathematics","B.Sc. Physics"]},
+};
+
+const getUsers    = () => JSON.parse(localStorage.getItem("ecl_users")||"[]");
+const saveUsers   = u  => localStorage.setItem("ecl_users", JSON.stringify(u));
+const getHistory  = uid => JSON.parse(localStorage.getItem(`ecl_h_${uid||"guest"}`)||"[]");
+const saveHistory = (uid,h) => localStorage.setItem(`ecl_h_${uid||"guest"}`, JSON.stringify(h));
+
+
+
+/* ============================================================
+   AUTH OVERLAY
+   ============================================================ */
+function AuthOverlay({ onAuth }) {
+  const [tab, setTab] = useState("login");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPass,  setLoginPass]  = useState("");
+  const [loginMsg,   setLoginMsg]   = useState("");
+  const [sFirst, setSFirst] = useState("");
+  const [sLast,  setSLast]  = useState("");
+  const [sEmail, setSEmail] = useState("");
+  const [sMatric,setSMatric]= useState("");
+  const [sPass,  setSPass]  = useState("");
+  const [signMsg,setSignMsg]= useState({text:"",ok:false});
+
+  function doLogin() {
+    if (!loginEmail||!loginPass){setLoginMsg("Please fill in all fields.");return;}
+    const users=getUsers();
+    const user=users.find(u=>u.email===loginEmail&&u.pass===btoa(loginPass));
+    if(!user){setLoginMsg("Incorrect email or password.");return;}
+    onAuth(user);
+  }
+
+  function doSignup() {
+    if(!sFirst||!sLast||!sEmail||!sPass){setSignMsg({text:"Please fill in all required fields.",ok:false});return;}
+    if(sPass.length<6){setSignMsg({text:"Password must be at least 6 characters.",ok:false});return;}
+    if(!/\S+@\S+\.\S+/.test(sEmail)){setSignMsg({text:"Please enter a valid email.",ok:false});return;}
+    const users=getUsers();
+    if(users.find(u=>u.email===sEmail)){setSignMsg({text:"Email already registered.",ok:false});return;}
+    const user={id:Date.now().toString(),first:sFirst,last:sLast,email:sEmail,matric:sMatric,pass:btoa(sPass),joined:new Date().toLocaleDateString()};
+    saveUsers([...users,user]);
+    setSignMsg({text:"Account created! Signing you in…",ok:true});
+    setTimeout(()=>onAuth(user),800);
+  }
+
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:999,background:"var(--ink)",display:"flex",alignItems:"center",justifyContent:"center"}} className="anim-fadeIn">
+      <div className="anim-slideUp" style={{background:"var(--paper)",width:"100%",maxWidth:420,margin:20,borderRadius:2,overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,.5)"}}>
+        <div style={{background:"var(--ink)",padding:"28px 32px 22px",textAlign:"center"}}>
+          <div className="serif" style={{fontSize:"2.2rem",fontWeight:700,color:"#f5f0e8",letterSpacing:"-0.5px"}}>
+            ECLIPSE <span style={{color:"var(--accent)",fontStyle:"italic"}}>LEARN</span>
+          </div>
+          <div className="mono" style={{fontSize:".72rem",letterSpacing:".12em",textTransform:"uppercase",color:"rgba(255,255,255,.38)",marginTop:5}}>Study. Predict. Excel.</div>
+        </div>
+        <div style={{display:"flex",borderBottom:"2px solid var(--border)"}}>
+          {["login","signup"].map(t=>(
+            <button key={t} onClick={()=>setTab(t)} className="btn" style={{flex:1,padding:14,background:"none",fontSize:".98rem",color:tab===t?"var(--ink)":"var(--muted)",borderBottom:tab===t?"2px solid var(--accent)":"2px solid transparent",marginBottom:-2,borderRadius:0,fontWeight:500}}>
+              {t==="login"?"Sign In":"Create Account"}
+            </button>
+          ))}
+        </div>
+
+        {tab==="login" && (
+          <div style={{padding:"26px 32px 8px"}} className="anim-fadeUp">
+            <div style={{marginBottom:16}}>
+              <label className="field-label">Email Address</label>
+              <input className="field-input" type="email" placeholder="you@university.edu" value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doLogin()}/>
+            </div>
+            <div style={{marginBottom:16}}>
+              <label className="field-label">Password</label>
+              <input className="field-input" type="password" placeholder="••••••••" value={loginPass} onChange={e=>setLoginPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doLogin()}/>
+            </div>
+            <button className="btn btn-dark" style={{width:"100%",fontSize:"1.02rem",padding:13}} onClick={doLogin}>Sign In →</button>
+            {loginMsg && <div style={{color:"var(--wrong)",fontSize:".84rem",marginTop:10,textAlign:"center"}}>{loginMsg}</div>}
+            <div style={{textAlign:"center",margin:"16px 0",position:"relative"}}>
+              <div style={{position:"absolute",inset:"50% 0 auto",height:1,background:"var(--border)"}}/>
+              <span className="mono" style={{background:"var(--paper)",padding:"0 12px",fontSize:".66rem",color:"var(--muted)",letterSpacing:".08em",position:"relative"}}>or</span>
+            </div>
+            <button className="btn btn-ghost" style={{width:"100%",fontSize:".96rem"}} onClick={()=>onAuth(null)}>Continue as Guest</button>
+          </div>
+        )}
+
+        {tab==="signup" && (
+          <div style={{padding:"26px 32px 8px"}} className="anim-fadeUp">
+            <div style={{display:"flex",gap:12,marginBottom:16}}>
+              <div style={{flex:1}}><label className="field-label">First Name</label><input className="field-input" placeholder="Ada" value={sFirst} onChange={e=>setSFirst(e.target.value)}/></div>
+              <div style={{flex:1}}><label className="field-label">Last Name</label><input className="field-input" placeholder="Okonkwo" value={sLast} onChange={e=>setSLast(e.target.value)}/></div>
+            </div>
+            <div style={{marginBottom:16}}><label className="field-label">Email Address</label><input className="field-input" type="email" placeholder="you@university.edu" value={sEmail} onChange={e=>setSEmail(e.target.value)}/></div>
+            <div style={{marginBottom:16}}><label className="field-label">Matric / Student ID <span style={{fontFamily:"'DM Sans',sans-serif",textTransform:"none",letterSpacing:0,opacity:.6}}>(optional)</span></label><input className="field-input" placeholder="e.g. CSC/2022/001" value={sMatric} onChange={e=>setSMatric(e.target.value)}/></div>
+            <div style={{marginBottom:16}}><label className="field-label">Password</label><input className="field-input" type="password" placeholder="Min. 6 characters" value={sPass} onChange={e=>setSPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doSignup()}/></div>
+            <button className="btn btn-dark" style={{width:"100%",fontSize:"1.02rem",padding:13}} onClick={doSignup}>Create Account →</button>
+            {signMsg.text && <div style={{color:signMsg.ok?"var(--correct)":"var(--wrong)",fontSize:".84rem",marginTop:10,textAlign:"center"}}>{signMsg.text}</div>}
+          </div>
+        )}
+
+        <div style={{textAlign:"center",padding:"16px 32px 22px",fontSize:".84rem",color:"var(--muted)"}}>
+          By continuing you agree to ECLIPSE LEARN's <span style={{color:"var(--accent)",cursor:"pointer"}}>Terms</span> &amp; <span style={{color:"var(--accent)",cursor:"pointer"}}>Privacy</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+function Nav({ user, isGuest, page, setPage, onShowAuth, onLogout, onTogglePanel, panelMode, panelOpen }) {
+  const [dropOpen, setDropOpen] = useState(false);
+  const initials = user ? (user.first[0]+(user.last[0]||"")).toUpperCase() : "";
+  const navLinks = [
+    {id:"home",icon:"🏠",label:"Home"},
+    {id:"quiz",icon:"📝",label:"Quiz"},
+    {id:"dashboard",icon:"📊",label:"Dashboard"},
+    {id:"flashcards",icon:"🗂️",label:"Flashcards"},
+    {id:"planner",icon:"🗓️",label:"Study Planner"},
+    {id:"info",icon:"💡",label:"Features Guide"},
+  ];
+  return (
+    <nav style={{height:62,flexShrink:0,background:"var(--ink)",display:"flex",alignItems:"center",padding:"0 20px",position:"relative",zIndex:50,boxShadow:"0 2px 12px rgba(0,0,0,.18)"}}>
+      <div className="serif" style={{fontSize:"1.72rem",fontWeight:700,color:"#f5f0e8",letterSpacing:"-0.5px",marginRight:28,flexShrink:0}}>
+        ECLIPSE <span style={{color:"var(--accent)",fontStyle:"italic"}}>LEARN</span>
+      </div>
+      <div style={{display:"flex",gap:2,flex:1,overflowX:"auto"}}>
+        {navLinks.map(l=>(
+          <button key={l.id} onClick={()=>setPage(l.id)}
+            style={{background:page===l.id?"rgba(255,255,255,.12)":"none",border:"none",color:page===l.id?"#fff":"rgba(255,255,255,.52)",fontFamily:"'DM Sans',sans-serif",fontSize:".91rem",fontWeight:500,padding:"8px 13px",cursor:"pointer",borderRadius:4,transition:"all .15s",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:"1.05rem"}}>{l.icon}</span><span>{l.label}</span>
+          </button>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:8,alignItems:"center",flexShrink:0}}>
+        {["upload","chat"].map(m=>(
+          <button key={m} onClick={()=>onTogglePanel(m)}
+            style={{background:panelOpen&&panelMode===m?"var(--accent)":"rgba(255,255,255,.1)",border:`1px solid ${panelOpen&&panelMode===m?"var(--accent)":"rgba(255,255,255,.15)"}`,color:"#fff",padding:"6px 12px",borderRadius:4,fontFamily:"'DM Mono',monospace",fontSize:".70rem",letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",transition:"all .15s"}}>
+            {m==="upload"?"📎 Upload":"💬 Chat"}
+          </button>
+        ))}
+        {user && (
+          <div style={{position:"relative"}} onClick={()=>setDropOpen(d=>!d)}>
+            <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",padding:"5px 10px",borderRadius:4,background:dropOpen?"rgba(255,255,255,.07)":"transparent"}}>
+              <div style={{width:30,height:30,borderRadius:"50%",background:"var(--accent)",color:"#fff",fontFamily:"'DM Mono',monospace",fontSize:".78rem",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{initials}</div>
+              <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:".84rem",color:"rgba(255,255,255,.8)"}}>{user.first}</span>
+            </div>
+            {dropOpen && (
+              <div style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"var(--paper)",border:"1.5px solid var(--border)",minWidth:160,boxShadow:"4px 4px 0 var(--cream)",zIndex:200}} className="anim-fadeUp">
+                {[["📊 My Dashboard","dashboard"],["🔄 Switch Account","auth"]].map(([lbl,act])=>(
+                  <button key={lbl} className="btn" onClick={()=>{setDropOpen(false);act==="auth"?onShowAuth():setPage(act);}} style={{width:"100%",background:"none",padding:"11px 16px",textAlign:"left",fontSize:".88rem",color:"var(--ink)",borderBottom:"1px solid var(--cream)",borderRadius:0,fontWeight:400}}>
+                    {lbl}
+                  </button>
+                ))}
+                <button className="btn" onClick={()=>{setDropOpen(false);onLogout();}} style={{width:"100%",background:"none",padding:"11px 16px",textAlign:"left",fontSize:".88rem",color:"var(--wrong)",borderRadius:0,fontWeight:400}}>⬡ Sign Out</button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}
+
+/* ============================================================
+   HOME PAGE
+   ============================================================ */
+function HomePage({ setPage, onTogglePanel }) {
+  const features = [
+    {icon:"📝",title:"Prediction Quiz",desc:"Write predictions for exam questions and get instant AI-powered feedback with model answers.",badge:"AI Graded",action:()=>setPage("quiz")},
+    {icon:"🗂️",title:"Smart Flashcards",desc:"Generate flashcards from any topic. Click to reveal answers and test your recall.",badge:"Spaced Learning",action:()=>setPage("flashcards")},
+    {icon:"🗓️",title:"Study Planner",desc:"Get a personalised daily study schedule based on your faculty, level, and available hours.",badge:"AI Scheduled",action:()=>setPage("planner")},
+    {icon:"📊",title:"Progress Dashboard",desc:"Track your quiz scores, performance trends, and identify your weakest topics over time.",badge:"Analytics",action:()=>setPage("dashboard")},
+    {icon:"🖼️",title:"Upload & Analyse",desc:"Upload lecture notes, diagrams, or past papers and get predicted questions from them instantly.",badge:"Image + Doc AI",action:()=>onTogglePanel("upload")},
+    {icon:"💬",title:"Study Chat",desc:"Chat in real-time with classmates in the same faculty and level study room.",badge:"Group Learning",action:()=>onTogglePanel("chat")},
+  ];
+  return (
+    <div className="anim-fadeUp">
+      <div style={{textAlign:"center",padding:"24px 0 36px"}}>
+        <h1 className="serif" style={{fontSize:"2.28rem",marginBottom:10,lineHeight:1.22}}>Study Smarter. Predict. Pass.</h1>
+        <p style={{color:"var(--muted)",maxWidth:500,margin:"0 auto",lineHeight:1.7,fontSize:"1.06rem"}}>
+          AI-powered quizzes, smart flashcards, and custom study plans, tailored exactly to your faculty, department, and level.
+        </p>
+        <p style={{maxWidth:580,margin:"14px auto 18px",lineHeight:1.78,fontSize:"1.04rem"}}>
+          See your predicted exam score. Spot and fix weak topics fast. Study what actually matters. Walk into the exam room ready to win.
+        </p>
+        <p className="mono" style={{fontSize:".84rem",letterSpacing:".16em",textTransform:"uppercase",color:"var(--accent)"}}>Simple. Powerful. AI-Powered.</p>
+      </div>
+      <div className="sec-label">What would you like to do?</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:14,marginBottom:32}}>
+        {features.map(f=>(
+          <div key={f.title} onClick={f.action} style={{background:"#fff",border:"1.5px solid var(--border)",padding:20,cursor:"pointer",transition:"all .15s",textAlign:"left"}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--ink)";e.currentTarget.style.boxShadow="3px 3px 0 var(--border)";e.currentTarget.style.transform="translateY(-1px)";}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
+            <span style={{fontSize:"1.82rem",display:"block",marginBottom:10}}>{f.icon}</span>
+            <h3 className="serif" style={{fontSize:"1.14rem",marginBottom:5}}>{f.title}</h3>
+            <p style={{fontSize:".89rem",color:"var(--muted)",lineHeight:1.55}}>{f.desc}</p>
+            <span className="mono" style={{fontSize:".66rem",letterSpacing:".1em",textTransform:"uppercase",color:"var(--accent)",marginTop:8,display:"block"}}>{f.badge}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   ERROR HELPER for API errors
+   ============================================================ */
+function ApiError({ error, onSetupKey }) {
+  if (error === "NO_API_KEY" || error?.includes("NO_API_KEY")) {
+    return (
+      <div style={{background:"#fff3e0",border:"1.5px solid #ff9800",padding:"16px 20px",borderRadius:2,marginBottom:16}}>
+        <div className="mono" style={{fontSize:".72rem",color:"#e65100",letterSpacing:".1em",textTransform:"uppercase",marginBottom:8}}>⚠ No Groq API Key</div>
+        <p style={{fontSize:".91rem",color:"#5d4037",lineHeight:1.6,marginBottom:12}}>
+          You need a free Groq API key to use AI features. Get one at <a href="https://console.groq.com" target="_blank" style={{color:"#e65100"}}>console.groq.com</a> — takes 1 minute, no credit card.
+        </p>
+        <button className="btn btn-dark" onClick={onSetupKey} style={{fontSize:".88rem",padding:"8px 18px"}}>Set Up API Key →</button>
+      </div>
+    );
+  }
+  if (error === "INVALID_KEY" || error?.includes("INVALID_KEY")) {
+    return (
+      <div style={{background:"#fde8e4",border:"1.5px solid var(--accent)",padding:"14px 18px",borderRadius:2,marginBottom:16}}>
+        <div className="mono" style={{fontSize:".72rem",color:"var(--accent)",letterSpacing:".1em",marginBottom:6}}>✗ Invalid API Key</div>
+        <p style={{fontSize:".89rem",color:"var(--ink)",lineHeight:1.6}}>Your Groq API key is invalid. Please go to the Home page and update it.</p>
+      </div>
+    );
+  }
+  return (
+    <div style={{background:"#fde8e4",border:"1.5px solid var(--accent)",padding:"14px 18px",borderRadius:2,marginBottom:16}}>
+      <div className="mono" style={{fontSize:".72rem",color:"var(--accent)",letterSpacing:".1em",marginBottom:6}}>✗ AI Error</div>
+      <p style={{fontSize:".89rem",color:"var(--ink)"}}>{error}</p>
+    </div>
+  );
+}
+
+/* ============================================================
+   QUIZ PAGE — uses Groq
+   ============================================================ */
+function QuizPage({ user, setPage }) {
+  const [stage, setStage] = useState("intro");
+  const [fac, setFac]   = useState("");
+  const [dept, setDept] = useState("");
+  const [lvl, setLvl]   = useState("");
+  const [questions, setQuestions] = useState([]);
+  const [qi, setQi]     = useState(0);
+  const [answer, setAnswer]   = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [checking, setChecking] = useState(false);
+  const [scores, setScores]     = useState([]);
+  const [responses, setResponses] = useState([]);
+  const [apiError, setApiError] = useState("");
+
+  const steps = [
+    {label:"① Faculty",    done:!!fac,  active:!fac},
+    {label:"② Department", done:!!dept, active:!!fac&&!dept},
+    {label:"③ Level",      done:!!lvl,  active:!!dept&&!lvl},
+    {label:"④ Start",      done:false,  active:!!lvl},
+  ];
+
+  async function startQuiz() {
+    setStage("loading"); setApiError("");
+    try {
+      const qs = await callGroqJSON(
+        `Generate exactly 5 university exam prediction questions for:
+- Faculty: ${FACULTIES[fac].name} (${fac})
+- Programme: ${dept}
+- Level: ${lvl} (Year ${lvl.toString()[0]}, Nigerian university)
+
+Return ONLY a valid JSON array with this exact structure (no markdown, no backticks):
+[{"question":"...","topic":"short topic name","modelAnswer":"2-4 sentence comprehensive answer"}]
+
+Questions must require explanation and analysis appropriate for Level ${lvl} ${dept} students.`
+      );
+      if (!Array.isArray(qs) || qs.length === 0) throw new Error("No questions generated");
+      setQuestions(qs);
+      setQi(0); setScores([]); setResponses([]); setAnswer(""); setFeedback(null);
+      setStage("active");
+    } catch(e) {
+      setApiError(e.message || "Failed to generate questions");
+      setStage("intro");
+    }
+  }
+
+  async function checkAnswer() {
+    if (!answer.trim()) { alert("Please write your prediction first."); return; }
+    setChecking(true); setApiError("");
+    const q = questions[qi];
+    try {
+      const r = await callGroqJSON(
+        `You are an academic exam marker. Evaluate this student's answer.
+
+Question: ${q.question}
+Model Answer: ${q.modelAnswer}
+Student's Answer: ${answer}
+
+Return ONLY a JSON object (no markdown):
+{"score": <0, 1, or 2>, "quality": "<good|ok|poor>", "feedback": "2-3 sentences of constructive feedback", "showModelAnswer": <true or false>}
+
+Scoring: 2=strong answer covering key points, 1=partial credit with some correct points, 0=incorrect or missing key concepts.`
+      );
+      setFeedback({...r, modelAnswer: q.modelAnswer});
+      setScores(s=>[...s, r.score]);
+      setResponses(rs=>[...rs, {question:q.question, answer, score:r.score, quality:r.quality}]);
+    } catch(e) {
+      setApiError(e.message || "Error checking answer");
+    }
+    setChecking(false);
+  }
+
+  function nextQ() {
+    if (qi+1 >= questions.length) {
+      const finalScores = [...scores];
+      const h = getHistory(user?.id);
+      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl,
+        score:finalScores.reduce((a,b)=>a+b,0), max:questions.length*2,
+        pct:Math.round(finalScores.reduce((a,b)=>a+b,0)/(questions.length*2)*100)});
+      saveHistory(user?.id, h.slice(0,20));
+      setStage("results");
+    } else {
+      setQi(i=>i+1); setAnswer(""); setFeedback(null);
+    }
+  }
+
+  function skipQ() {
+    setScores(s=>[...s,0]);
+    setResponses(rs=>[...rs,{question:questions[qi].question,answer:"(skipped)",score:0,quality:"skip"}]);
+    if (qi+1 >= questions.length) {
+      const finalScores = [...scores, 0];
+      const h = getHistory(user?.id);
+      h.unshift({date:new Date().toLocaleDateString(), dept, fac, lvl,
+        score:finalScores.reduce((a,b)=>a+b,0), max:questions.length*2,
+        pct:Math.round(finalScores.reduce((a,b)=>a+b,0)/(questions.length*2)*100)});
+      saveHistory(user?.id, h.slice(0,20));
+      setStage("results");
+    } else {
+      setQi(i=>i+1); setAnswer(""); setFeedback(null);
+    }
+  }
+
+  const q = questions[qi];
+  const tot = scores.reduce((a,b)=>a+b,0);
+  const mx  = questions.length*2;
+  const pct = mx ? Math.round(tot/mx*100) : 0;
+  const grade = pct>=80?"🏆 Excellent — Well prepared!":pct>=60?"📚 Good — Review key concepts":pct>=40?"📝 Fair — More revision needed":"🔄 Keep practising!";
+  const chipMap = {good:{lbl:"Strong (2pts)"},ok:{lbl:"Partial (1pt)"},poor:{lbl:"Weak (0pts)"},skip:{lbl:"Skipped"}};
+
+  return (
+    <div className="anim-fadeUp">
+      {stage==="intro" && (
+        <>
+          <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:6}}>Prediction Quiz</h2>
+          <p style={{color:"var(--muted)",fontSize:"1rem",marginBottom:16,lineHeight:1.6}}>Select your faculty, department and level to receive AI-generated exam questions.</p>
+
+          {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
+
+          <div style={{display:"flex",gap:6,marginBottom:22,flexWrap:"wrap"}}>
+            {steps.map(s=>(
+              <div key={s.label} className="mono" style={{fontSize:".66rem",letterSpacing:".1em",textTransform:"uppercase",padding:"4px 11px",border:"1px solid var(--border)",borderRadius:20,background:s.done?"var(--ink)":s.active?"var(--accent)":"transparent",color:s.done||s.active?"#fff":"var(--muted)",borderColor:s.done?"var(--ink)":s.active?"var(--accent)":"var(--border)"}}>
+                {s.label}
+              </div>
+            ))}
+          </div>
+          <div className="sec-label">Select Your Faculty</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(138px,1fr))",gap:9,marginBottom:22}}>
+            {Object.entries(FACULTIES).map(([key,f])=>(
+              <button key={key} onClick={()=>{setFac(key);setDept("");setLvl("");}} className="btn"
+                style={{background:fac===key?"var(--ink)":"#fff",border:`1.5px solid ${fac===key?"var(--ink)":"var(--border)"}`,color:fac===key?"var(--paper)":"var(--ink)",padding:"12px 8px",fontSize:".87rem",lineHeight:1.3,boxShadow:fac===key?"3px 3px 0 var(--border)":"none"}}>
+                <span style={{display:"block",fontSize:"1.37rem",marginBottom:5}}>{f.icon}</span>
+                {f.name.split(" ").slice(2).join(" ")||f.name}
+                <span className="mono" style={{display:"block",fontSize:".64rem",letterSpacing:".1em",opacity:.5,marginTop:2}}>{key}</span>
+              </button>
+            ))}
+          </div>
+          {fac && (
+            <div style={{display:"flex",gap:12,marginBottom:18,flexWrap:"wrap"}} className="anim-fadeUp">
+              <div style={{flex:1,minWidth:170}}>
+                <label className="field-label">Department / Programme</label>
+                <select className="field-input" value={dept} onChange={e=>setDept(e.target.value)}>
+                  <option value="">— Select department —</option>
+                  {FACULTIES[fac].depts.map(d=><option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div style={{flex:1,minWidth:170}}>
+                <label className="field-label">Level</label>
+                <select className="field-input" value={lvl} onChange={e=>setLvl(e.target.value)}>
+                  <option value="">— Select level —</option>
+                  {FACULTIES[fac].levels.map(l=><option key={l} value={l}>Level {l}</option>)}
+                </select>
+              </div>
+            </div>
+          )}
+          <div style={{textAlign:"center",paddingTop:6}}>
+            <button className="btn btn-dark" onClick={startQuiz} disabled={!fac||!dept||!lvl} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Start Quiz →</button>
+          </div>
+        </>
+      )}
+
+      {stage==="loading" && (
+        <div style={{textAlign:"center",padding:"60px 20px"}}>
+          <div style={{width:34,height:34,border:"3px solid var(--border)",borderTopColor:"var(--accent)",borderRadius:"50%",animation:"spin .8s linear infinite",margin:"0 auto 16px"}}/>
+          <p className="serif" style={{fontStyle:"italic",color:"var(--muted)",fontSize:"1.05rem"}}>Generating your questions via Groq AI…</p>
+          <p className="mono" style={{fontSize:".70rem",color:"var(--border)",marginTop:8,letterSpacing:".08em"}}>This usually takes 3–6 seconds</p>
+        </div>
+      )}
+
+      {stage==="active" && q && (
+        <>
+          <div className="mono" style={{fontSize:".73rem",color:"var(--muted)",letterSpacing:".08em",marginBottom:5,textTransform:"uppercase"}}>Question {qi+1} of {questions.length}</div>
+          <div style={{background:"var(--cream)",height:4,borderRadius:2,marginBottom:28,overflow:"hidden"}}>
+            <div style={{height:"100%",background:"var(--accent)",width:`${(qi/questions.length)*100}%`,transition:"width .5s ease"}}/>
+          </div>
+          {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
+          <div key={qi} className="anim-fadeUp" style={{background:"#fff",border:"1.5px solid var(--border)",padding:"30px 34px",boxShadow:"4px 4px 0 var(--cream)"}}>
+            <div style={{display:"flex",gap:8,marginBottom:15,flexWrap:"wrap"}}>
+              <span className="mono" style={{fontSize:".73rem",background:"var(--ink)",color:"var(--paper)",padding:"2px 9px",letterSpacing:".1em",textTransform:"uppercase"}}>Q {String(qi+1).padStart(2,"0")}</span>
+              <span className="mono" style={{fontSize:".70rem",color:"var(--muted)",border:"1px solid var(--border)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>{q.topic}</span>
+              <span className="mono" style={{fontSize:".66rem",color:"rgba(76,175,80,.8)",border:"1px solid rgba(76,175,80,.3)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>⚡ Groq AI</span>
+            </div>
+            <p className="serif" style={{fontSize:"1.35rem",lineHeight:1.55,marginBottom:20}}>{q.question}</p>
+            <textarea className="field-input" value={answer} onChange={e=>setAnswer(e.target.value)} disabled={!!feedback} placeholder="Write your prediction here…" rows={4}/>
+            {feedback && (
+              <div style={{marginTop:12,padding:"12px 16px",borderLeft:`3px solid ${feedback.quality==="good"?"var(--correct)":feedback.quality==="ok"?"var(--gold)":"var(--wrong)"}`,background:"var(--cream)"}} className="anim-fadeIn">
+                <div className="mono" style={{fontSize:".66rem",letterSpacing:".12em",textTransform:"uppercase",marginBottom:5,fontWeight:500,color:feedback.quality==="good"?"var(--correct)":feedback.quality==="ok"?"var(--gold)":"var(--wrong)"}}>
+                  {feedback.quality==="good"?"✓ Strong Prediction":feedback.quality==="ok"?"◐ Partial Credit":"✗ Needs Improvement"}
+                </div>
+                <div style={{fontSize:".96rem",lineHeight:1.62}}>{feedback.feedback}</div>
+                {(feedback.showModelAnswer||feedback.quality==="poor") && (
+                  <div style={{marginTop:9,paddingTop:9,borderTop:"1px solid var(--border)",fontSize:".91rem",color:"var(--muted)"}}>
+                    <strong className="mono" style={{fontSize:".66rem",letterSpacing:".1em",textTransform:"uppercase",display:"block",marginBottom:4,color:"var(--ink)"}}>Model Answer</strong>
+                    {feedback.modelAnswer}
+                  </div>
+                )}
+              </div>
+            )}
+            <div style={{display:"flex",gap:8,marginTop:17,flexWrap:"wrap"}}>
+              {!feedback ? (
+                <>
+                  <button className="btn btn-red" onClick={checkAnswer} disabled={checking}>
+                    {checking?<><span className="spinner"/>Checking…</>:"Check My Answer"}
+                  </button>
+                  <button className="btn btn-ghost" onClick={skipQ}>Skip</button>
+                </>
+              ) : (
+                <button className="btn btn-dark" onClick={nextQ}>
+                  {qi<questions.length-1?"Next Question →":"See Results →"}
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {stage==="results" && (
+        <div className="anim-fadeUp">
+          <div style={{background:"var(--ink)",color:"var(--paper)",padding:"36px 32px",marginBottom:22,position:"relative",overflow:"hidden"}}>
+            <div style={{position:"absolute",right:-20,top:-20,width:130,height:130,borderRadius:"50%",background:"rgba(255,255,255,.03)"}}/>
+            <div className="serif" style={{fontSize:"1.06rem",fontStyle:"italic",opacity:.5,marginBottom:8}}>Your prediction score</div>
+            <div className="serif" style={{fontSize:"4.10rem",fontWeight:700,lineHeight:1}}>{tot}<span style={{fontSize:"1.60rem",opacity:.4}}>/{mx}</span></div>
+            <div className="mono" style={{fontSize:".78rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--gold)",marginTop:12}}>{grade}</div>
+          </div>
+          <div style={{marginBottom:22}}>
+            {responses.map((r,i)=>(
+              <div key={i} style={{border:"1.5px solid var(--border)",padding:"15px 19px",marginBottom:8,background:"#fff"}}>
+                <div className="serif" style={{fontSize:"1.03rem",marginBottom:6,lineHeight:1.4}}>{i+1}. {r.question}</div>
+                <div style={{fontSize:".89rem",color:"var(--muted)",lineHeight:1.5}}>{r.answer}</div>
+                <span className="chip" style={{background:r.quality==="good"?"#d4edda":r.quality==="ok"?"#fff3cd":r.quality==="poor"?"#fde8e4":"var(--cream)",color:r.quality==="good"?"var(--correct)":r.quality==="ok"?"var(--gold)":r.quality==="poor"?"var(--wrong)":"var(--muted)"}}>
+                  {chipMap[r.quality]?.lbl||"Skipped"}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div style={{textAlign:"center"}}>
+            <button className="btn btn-dark" onClick={()=>{setStage("intro");setFac("");setDept("");setLvl("");}} style={{fontSize:"1.09rem",padding:"12px 40px"}}>Try Another Quiz →</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+function DashboardPage({ user }) {
+  const history = getHistory(user?.id);
+  const total = history.length;
+  const avg  = total ? Math.round(history.reduce((a,b)=>a+b.pct,0)/total) : 0;
+  const best = total ? Math.max(...history.map(h=>h.pct)) : 0;
+  const recent = history.slice(0,8).reverse();
+  const statCards = [
+    {v:total,       l:"Total Quizzes",dark:true},
+    {v:`${avg}%`,   l:"Avg Score"},
+    {v:`${best}%`,  l:"Best Score"},
+    {v:total>0?history[0].fac:"—", l:"Last Faculty"},
+  ];
+  return (
+    <div className="anim-fadeUp">
+      <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:4}}>Progress Dashboard</h2>
+      <p style={{color:"var(--muted)",fontSize:".98rem",marginBottom:22}}>Track your performance across all quizzes.</p>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",gap:14,marginBottom:28}}>
+        {statCards.map(s=>(
+          <div key={s.l} style={{background:s.dark?"var(--ink)":"#fff",border:"1.5px solid var(--border)",padding:20}}>
+            <div className="serif" style={{fontSize:"2.74rem",fontWeight:700,lineHeight:1,marginBottom:4,color:s.dark?"#fff":undefined}}>{s.v}</div>
+            <div className="mono" style={{fontSize:".68rem",letterSpacing:".1em",textTransform:"uppercase",color:s.dark?"rgba(255,255,255,.45)":"var(--muted)"}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      <div className="sec-label">Score History</div>
+      <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:22,marginBottom:20}}>
+        <h3 className="serif" style={{fontSize:"1.14rem",marginBottom:16}}>Quiz Scores Over Time</h3>
+        {recent.length ? (
+          <div style={{display:"flex",gap:10,alignItems:"flex-end",height:100}}>
+            {recent.map((h,i)=>(
+              <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:5}}>
+                <div style={{background:"var(--accent)",width:"100%",height:`${Math.max(h.pct,4)}px`,borderRadius:"1px 1px 0 0",transition:"height .5s ease"}}/>
+                <div className="mono" style={{fontSize:".64rem",textAlign:"center",color:"var(--muted)"}}>{h.pct}%</div>
+              </div>
+            ))}
+          </div>
+        ) : <div style={{color:"var(--muted)",fontSize:".91rem",fontStyle:"italic"}}>No quiz data yet.</div>}
+      </div>
+      <div className="sec-label">Recent Quizzes</div>
+      {history.length ? history.map((h,i)=>(
+        <div key={i} style={{display:"flex",alignItems:"center",gap:14,padding:"12px 16px",background:"#fff",border:"1.5px solid var(--border)",marginBottom:8}}>
+          <div className="mono" style={{fontSize:".68rem",color:"var(--muted)",minWidth:80}}>{h.date}</div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:".93rem",fontWeight:500}}>{h.dept||h.fac}</div>
+            <div className="mono" style={{fontSize:".66rem",color:"var(--muted)",marginTop:1}}>{h.fac} · Level {h.lvl}</div>
+          </div>
+          <div className="serif" style={{fontSize:"1.37rem",fontWeight:700,color:h.pct>=70?"var(--correct)":h.pct>=40?"var(--gold)":"var(--wrong)"}}>{h.pct}%</div>
+        </div>
+      )) : (
+        <div style={{textAlign:"center",padding:"40px 20px",color:"var(--muted)"}}>
+          <span style={{fontSize:"2.74rem",display:"block",marginBottom:12,opacity:.5}}>📋</span>
+          <p style={{fontSize:"1rem",lineHeight:1.6}}>No quizzes taken yet.<br/>Head to the Quiz page to get started!</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   FLASHCARDS — uses Groq
+   ============================================================ */
+function FlashcardsPage({ setPage }) {
+  const [topic,    setTopic]    = useState("");
+  const [count,    setCount]    = useState("10");
+  const [cards,    setCards]    = useState([]);
+  const [loading,  setLoading]  = useState(false);
+  const [revealed, setRevealed] = useState({});
+  const [apiError, setApiError] = useState("");
+
+  async function generate() {
+    if (!topic.trim()) { alert("Please enter a topic first."); return; }
+    setLoading(true); setCards([]); setRevealed({}); setApiError("");
+    try {
+      const c = await callGroqJSON(
+        `Generate exactly ${count} university-level flashcards for the topic: "${topic}".
+
+Return ONLY a valid JSON array (no markdown, no backticks, no explanation):
+[{"question":"Clear, specific question?","answer":"2-3 sentence comprehensive answer covering key concepts."}]
+
+Make questions exam-relevant and answers educational and thorough.`
+      );
+      if (!Array.isArray(c) || c.length === 0) throw new Error("No flashcards generated");
+      setCards(c);
+    } catch(e) {
+      setApiError(e.message || "Error generating flashcards");
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div className="anim-fadeUp">
+      <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:4}}>Smart Flashcards</h2>
+      <p style={{color:"var(--muted)",fontSize:".98rem",marginBottom:16}}>Generate cards from any topic. Click a card to reveal the answer.</p>
+
+      {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
+
+      <div className="card" style={{marginBottom:22}}>
+        <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:14}}>
+          <div style={{flex:2,minWidth:200}}>
+            <label className="field-label">Topic or Subject</label>
+            <input className="field-input" placeholder="e.g. Data Structures, Thermodynamics…" value={topic} onChange={e=>setTopic(e.target.value)} onKeyDown={e=>e.key==="Enter"&&generate()}/>
+          </div>
+          <div style={{minWidth:130}}>
+            <label className="field-label">Number of Cards</label>
+            <select className="field-input" value={count} onChange={e=>setCount(e.target.value)}>
+              {[5,10,15].map(n=><option key={n} value={n}>{n} cards</option>)}
+            </select>
+          </div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <button className="btn btn-dark" onClick={generate} disabled={loading}>
+            {loading?<><span className="spinner"/>Generating…</>:"Generate Flashcards"}
+          </button>
+        </div>
+      </div>
+      {loading && (
+        <div style={{textAlign:"center",padding:"60px 20px"}}>
+          <div style={{width:34,height:34,border:"3px solid var(--border)",borderTopColor:"var(--accent)",borderRadius:"50%",animation:"spin .8s linear infinite",margin:"0 auto 16px"}}/>
+          <p className="serif" style={{fontStyle:"italic",color:"var(--muted)"}}>Creating your flashcards via Groq AI…</p>
+        </div>
+      )}
+      {cards.length>0 && (
+        <>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+            <div className="mono" style={{fontSize:".78rem",color:"var(--muted)",letterSpacing:".08em",textTransform:"uppercase"}}>{cards.length} cards · Click any card to reveal</div>
+            <span className="mono" style={{fontSize:".66rem",color:"rgba(76,175,80,.8)",border:"1px solid rgba(76,175,80,.3)",padding:"2px 9px",letterSpacing:".08em",textTransform:"uppercase"}}>⚡ Groq AI</span>
+          </div>
+          {cards.map((c,i)=>(
+            <div key={i} onClick={()=>setRevealed(r=>({...r,[i]:!r[i]}))}
+              style={{background:"#fff",border:"1.5px solid var(--border)",padding:32,marginBottom:14,cursor:"pointer",position:"relative",boxShadow:"3px 3px 0 var(--cream)",transition:"box-shadow .15s"}}
+              onMouseEnter={e=>e.currentTarget.style.boxShadow="5px 5px 0 var(--border)"}
+              onMouseLeave={e=>e.currentTarget.style.boxShadow="3px 3px 0 var(--cream)"}>
+              <p className="serif" style={{fontSize:"1.25rem",lineHeight:1.5}}>{c.question}</p>
+              {revealed[i] && (
+                <p style={{fontSize:"1rem",lineHeight:1.6,color:"var(--muted)",marginTop:14,paddingTop:14,borderTop:"1px solid var(--border)"}} className="anim-fadeIn">{c.answer}</p>
+              )}
+              <div className="mono" style={{fontSize:".66rem",color:revealed[i]?"var(--gold)":"var(--border)",position:"absolute",bottom:10,right:14,letterSpacing:".08em",textTransform:"uppercase"}}>
+                {revealed[i]?"Tap to hide":"Tap to reveal"}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   STUDY PLANNER — uses Groq
+   ============================================================ */
+function PlannerPage({ setPage }) {
+  const [form, setForm] = useState({fac:"",lvl:"",date:"",hours:"4",weak:""});
+  const [plan, setPlan] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+
+  async function generate() {
+    if (!form.fac||!form.lvl) { alert("Please select faculty and level."); return; }
+    setLoading(true); setPlan(null); setApiError("");
+    try {
+      const daysUntil = form.date ? Math.max(1,Math.ceil((new Date(form.date)-new Date())/86400000)) : 7;
+      const raw = await callGroqJSON(
+        `Create a ${Math.min(daysUntil,7)}-day study plan for a Nigerian university student:
+- Faculty: ${form.fac}, Level: ${form.lvl}
+- Available: ${form.hours} hours per day
+- Weak areas: ${form.weak||"general revision"}
+- Days until exam: ${daysUntil}
+
+Return ONLY a valid JSON array (no markdown):
+[{"day":"Day 1 — Mon","sessions":[{"time":"9:00 AM","task":"Topic Name","description":"What to study and how","duration":"45 min"}]}]
+
+Include 3-4 sessions per day. Last day should be full revision only.`
+      );
+      setPlan(raw);
+    } catch(e) {
+      setApiError(e.message || "Error generating plan");
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div className="anim-fadeUp">
+      <h2 className="serif" style={{fontSize:"1.82rem",marginBottom:4}}>Study Planner</h2>
+      <p style={{color:"var(--muted)",fontSize:".98rem",marginBottom:16}}>Get a personalised AI-generated study schedule.</p>
+
+      {apiError && <ApiError error={apiError} onSetupKey={()=>setPage("home")} />}
+
+      <div className="card" style={{marginBottom:22}}>
+        <h3 className="serif" style={{fontSize:"1.25rem",marginBottom:16}}>Tell us about your study needs</h3>
+        <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:14}}>
+          <div style={{flex:1,minWidth:160}}>
+            <label className="field-label">Faculty</label>
+            <select className="field-input" value={form.fac} onChange={e=>setForm(f=>({...f,fac:e.target.value}))}>
+              <option value="">Select faculty</option>
+              {Object.entries(FACULTIES).map(([k,v])=><option key={k} value={k}>{v.name.slice(0,28)}… ({k})</option>)}
+            </select>
+          </div>
+          <div style={{flex:1,minWidth:140}}>
+            <label className="field-label">Level</label>
+            <select className="field-input" value={form.lvl} onChange={e=>setForm(f=>({...f,lvl:e.target.value}))}>
+              <option value="">Select level</option>
+              {[100,200,300,400,500].map(l=><option key={l}>{l}</option>)}
+            </select>
+          </div>
+        </div>
+        <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:14}}>
+          <div style={{flex:1,minWidth:160}}><label className="field-label">Exam Date</label><input className="field-input" type="date" value={form.date} onChange={e=>setForm(f=>({...f,date:e.target.value}))}/></div>
+          <div style={{flex:1,minWidth:140}}>
+            <label className="field-label">Hours per day</label>
+            <select className="field-input" value={form.hours} onChange={e=>setForm(f=>({...f,hours:e.target.value}))}>
+              {["2","3","4","6","8"].map(h=><option key={h} value={h}>{h} hours</option>)}
+            </select>
+          </div>
+        </div>
+        <div style={{marginBottom:14}}>
+          <label className="field-label">Weak subjects / topics (optional)</label>
+          <input className="field-input" placeholder="e.g. Calculus, Organic Chemistry…" value={form.weak} onChange={e=>setForm(f=>({...f,weak:e.target.value}))}/>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <button className="btn btn-dark" onClick={generate} disabled={loading}>
+            {loading?<><span className="spinner"/>Building…</>:"Generate My Plan"}
+          </button>
+        </div>
+      </div>
+      {loading && (
+        <div style={{textAlign:"center",padding:"60px 20px"}}>
+          <div style={{width:34,height:34,border:"3px solid var(--border)",borderTopColor:"var(--accent)",borderRadius:"50%",animation:"spin .8s linear infinite",margin:"0 auto 16px"}}/>
+          <p className="serif" style={{fontStyle:"italic",color:"var(--muted)"}}>Building your study plan…</p>
+        </div>
+      )}
+      {plan && (
+        <div style={{background:"#fff",border:"1.5px solid var(--border)",padding:22}} className="anim-fadeUp">
+          {plan.map((d,i)=>(
+            <div key={i} style={{marginBottom:18}}>
+              <div className="mono" style={{fontSize:".75rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--accent)",marginBottom:8,paddingBottom:6,borderBottom:"1px solid var(--border)"}}>{d.day}</div>
+              {d.sessions.map((s,j)=>(
+                <div key={j} style={{display:"flex",gap:14,alignItems:"flex-start",padding:"10px 0",borderBottom:"1px solid var(--cream)"}}>
+                  <div className="mono" style={{fontSize:".73rem",color:"var(--muted)",minWidth:70,paddingTop:2}}>{s.time}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:".96rem",fontWeight:500,marginBottom:2}}>{s.task}</div>
+                    <div style={{fontSize:".89rem",color:"var(--muted)",lineHeight:1.5}}>{s.description}</div>
+                  </div>
+                  <div className="mono" style={{fontSize:".71rem",background:"var(--cream)",padding:"3px 9px",color:"var(--muted)",whiteSpace:"nowrap"}}>{s.duration}</div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   INFO PAGE
+   ============================================================ */
+function InfoPage() {
+  const sections = [
+    { title:"1. Personalized Learning", cards:[
+      {icon:"🎯",h:"Customized Study Plans",p:"The planner analyses your faculty, level, exam date and weak topics to create a day-by-day schedule targeting your knowledge gaps first."},
+      {icon:"🤖",h:"Adaptive AI Recommendations",p:"Questions are generated specifically for your department and academic level — not generic content. The AI knows the difference between Level 100 and Level 400."},
+    ]},
+    { title:"2. Interactive Practice Tools", cards:[
+      {icon:"📝",h:"AI Prediction Quizzes",p:"Write open-ended answers to exam-style questions. The AI grades your prediction, gives constructive feedback, and shows a model answer when needed."},
+      {icon:"🗂️",h:"Flashcards with Spaced Learning",p:"Auto-generate Q&A flashcards from any topic. Click to reveal answers and test your recall quickly before an exam."},
+      {icon:"⚡",h:"Powered by Groq AI",p:"Uses Groq's free LLaMA 3 70B model — blazing fast, high quality, and completely free with your Groq API key from console.groq.com."},
+    ]},
+    { title:"3. Predictive Analytics", cards:[
+      {icon:"📊",h:"Progress Dashboard",p:"Track your quiz scores over time, identify weak topics, and see your performance trend with visual charts and statistics."},
+      {icon:"📈",h:"Performance Prediction",p:"Your score history and topic performance give early signals of areas needing more revision before exam day."},
+    ]},
+    { title:"4. Time Management & Collaboration", cards:[
+      {icon:"🗓️",h:"AI Study Planner",p:"Provides a structured timetable across multiple days, balancing strong and weak subjects, with session durations built in."},
+      {icon:"💬",h:"Faculty & Level Study Rooms",p:"The group chat connects you with students in the same faculty and level. Share notes, tips, and discuss topics in real time."},
+      {icon:"✅",h:"Reliable AI Outputs",p:"All AI responses are grounded in your faculty, programme, and level — reducing generic or inaccurate answers."},
+    ]},
+  ];
+  return (
+    <div className="anim-fadeUp">
+      <div style={{textAlign:"center",padding:"20px 0 32px"}}>
+        <h1 className="serif" style={{fontSize:"2.17rem",marginBottom:10}}>Features Guide</h1>
+        <p style={{color:"var(--muted)",maxWidth:500,margin:"0 auto",lineHeight:1.7,fontSize:"1.03rem"}}>Everything built into ECLIPSE LEARN to help you study effectively, retain more, and pass your exams.</p>
+      </div>
+      {sections.map(s=>(
+        <div key={s.title} style={{marginBottom:28}}>
+          <h2 className="serif" style={{fontSize:"1.43rem",marginBottom:14,paddingBottom:8,borderBottom:"1.5px solid var(--ink)"}}>{s.title}</h2>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:12}}>
+            {s.cards.map(c=>(
+              <div key={c.h} style={{background:"#fff",border:"1.5px solid var(--border)",padding:"18px 20px"}}>
+                <span style={{fontSize:"1.60rem",display:"block",marginBottom:9}}>{c.icon}</span>
+                <h4 className="serif" style={{fontSize:"1.08rem",marginBottom:6}}>{c.h}</h4>
+                <p style={{fontSize:".89rem",color:"var(--muted)",lineHeight:1.6}}>{c.p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ============================================================
+   UPLOAD PANEL
+   ============================================================ */
+function UploadPanel({ setPage }) {
+  const [fileData,   setFileData]   = useState(null);
+  const [fileType,   setFileType]   = useState(null);
+  const [fileName,   setFileName]   = useState("");
+  const [previewSrc, setPreviewSrc] = useState("");
+  const [prompt,     setPrompt]     = useState("");
+  const [result,     setResult]     = useState("");
+  const [loading,    setLoading]    = useState(false);
+
+  function handleFile(e) {
+    const f = e.target.files[0]; if (!f) return;
+    setFileName(f.name);
+    const reader = new FileReader();
+    if (f.type.startsWith("image/")) {
+      setFileType("image");
+      reader.onload = ev => { setFileData(ev.target.result.split(",")[1]); setPreviewSrc(ev.target.result); };
+      reader.readAsDataURL(f);
+    } else { setFileType("doc"); setFileData(null); setPreviewSrc(""); }
+  }
+
+  async function analyse() {
+    const p = prompt.trim() || "Generate 5 university-level prediction exam questions from this content. Include a model answer for each.";
+    setLoading(true); setResult("Analysing…");
+    try {
+      const text = await callGroq(p + (fileType !== "image" ? "\n\n(User uploaded a document — generate questions based on typical academic content for that subject.)" : ""));
+      setResult(text);
+    } catch(e) {
+      setResult("Error: " + (e.message || "Could not analyse. Please try again."));
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",flex:1,overflow:"hidden"}}>
+      <div style={{margin:14,border:"1.5px dashed rgba(255,255,255,.16)",padding:"20px 12px",textAlign:"center",cursor:"pointer",background:"rgba(255,255,255,.03)",borderRadius:2,flexShrink:0}}
+        onClick={()=>document.getElementById("fileInp").click()}
+        onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent)";e.currentTarget.style.background="rgba(200,64,30,.07)";}}
+        onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.16)";e.currentTarget.style.background="rgba(255,255,255,.03)";}}>
+        <span style={{fontSize:"1.82rem",display:"block",marginBottom:7}}>🖼️</span>
+        <p style={{fontSize:".87rem",color:"rgba(255,255,255,.42)",lineHeight:1.5}}>Upload image or document</p>
+        <div className="mono" style={{fontSize:".64rem",color:"rgba(255,255,255,.22)",marginTop:4}}>JPG · PNG · PDF · DOCX</div>
+      </div>
+      <input type="file" id="fileInp" accept="image/*,.pdf,.doc,.docx" style={{display:"none"}} onChange={handleFile}/>
+      {fileName && (
+        <div style={{margin:"0 14px 10px",background:"rgba(255,255,255,.05)",borderRadius:2,padding:10}}>
+          {previewSrc && <img src={previewSrc} alt="" style={{width:"100%",maxHeight:110,objectFit:"cover",display:"block"}}/>}
+          <div className="mono" style={{fontSize:".68rem",color:"rgba(255,255,255,.38)",marginTop:5,wordBreak:"break-all"}}>{fileName}</div>
+        </div>
+      )}
+      <textarea value={prompt} onChange={e=>setPrompt(e.target.value)}
+        style={{margin:"0 14px 10px",background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.1)",borderRadius:1,padding:"9px 11px",color:"var(--paper)",fontFamily:"'DM Sans',sans-serif",fontSize:".89rem",width:"calc(100% - 28px)",outline:"none",resize:"none",minHeight:54}}
+        placeholder={"Optional focus prompt…\ne.g. Generate 5 exam questions from this…"}/>
+      <button onClick={analyse} disabled={!fileName||loading}
+        style={{margin:"0 14px 14px",background:"var(--accent)",color:"#fff",border:"none",padding:10,fontFamily:"'DM Sans',sans-serif",fontSize:".91rem",fontWeight:500,cursor:"pointer",borderRadius:1,width:"calc(100% - 28px)",opacity:(!fileName||loading)?.35:1}}>
+        {loading?<><span className="spinner"/>Analysing…</>:"Analyse & Generate Questions"}
+      </button>
+      {result && (
+        <div style={{margin:"0 14px",flex:1,overflowY:"auto",background:"rgba(255,255,255,.04)",borderRadius:2,padding:"10px 11px",fontSize:".89rem",lineHeight:1.65,color:"rgba(255,255,255,.68)",whiteSpace:"pre-wrap"}}>{result}</div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   CHAT PANEL
+   ============================================================ */
+function ChatPanel({ fac, lvl, user }) {
+  const [nickname, setNickname] = useState(user?.first||"Student");
+  const [msgs,  setMsgs]  = useState([{id:"sys0",sys:true,text:"👋 Select your faculty and level on the Quiz page to join a study room."}]);
+  const [input, setInput] = useState("");
+  const [knownIds, setKnownIds] = useState(new Set(["sys0"]));
+  const msgsRef = useRef(null);
+  const room    = fac&&lvl ? `${fac} · Level ${lvl}` : null;
+  const roomKey = room ? "chat:"+room.replace(/[\s·]/g,"-") : null;
+
+  useEffect(()=>{
+    if (!room) return;
+    setMsgs([{id:"sys1",sys:true,text:`You joined ${room} 👋`}]);
+    setKnownIds(new Set(["sys1"]));
+    loadMsgs();
+    const t = setInterval(loadMsgs,5000);
+    return ()=>clearInterval(t);
+  },[room]);
+
+  async function loadMsgs() {
+    if (!roomKey) return;
+    try {
+      const stored = JSON.parse(localStorage.getItem(roomKey)||"[]");
+      setKnownIds(prev=>{
+        const newOnes = stored.filter(m=>!prev.has(m.id));
+        if (!newOnes.length) return prev;
+        setMsgs(ms=>[...ms,...newOnes.map(m=>({...m,own:false}))]);
+        return new Set([...prev,...stored.map(m=>m.id)]);
+      });
+    } catch(e){}
+  }
+
+  useEffect(()=>{ if(msgsRef.current) msgsRef.current.scrollTop=msgsRef.current.scrollHeight; },[msgs]);
+
+  function send() {
+    if (!input.trim()||!room) return;
+    const msg = {id:Date.now()+Math.random().toString(36).slice(2),user:nickname,text:input.trim(),time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),own:true};
+    setMsgs(ms=>[...ms,msg]);
+    setKnownIds(prev=>new Set([...prev,msg.id]));
+    setInput("");
+    try {
+      let stored = JSON.parse(localStorage.getItem(roomKey)||"[]");
+      stored.push({...msg,own:false});
+      if(stored.length>100) stored=stored.slice(-100);
+      localStorage.setItem(roomKey, JSON.stringify(stored));
+    } catch(e){}
+  }
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",flex:1,overflow:"hidden"}}>
+      <div style={{padding:"10px 14px 0",flexShrink:0}}>
+        <input value={nickname} onChange={e=>setNickname(e.target.value)} placeholder="Your nickname…"
+          style={{width:"100%",background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:1,padding:"8px 11px",color:"var(--paper)",fontFamily:"'DM Mono',monospace",fontSize:".80rem",outline:"none"}}/>
+      </div>
+      <div style={{padding:"10px 14px",borderBottom:"1px solid rgba(255,255,255,.06)",flexShrink:0}}>
+        <div className="mono" style={{fontSize:".64rem",letterSpacing:".1em",textTransform:"uppercase",color:"rgba(255,255,255,.3)",marginBottom:2}}>Study Room</div>
+        <div style={{fontSize:".93rem",fontWeight:500}}>{room||"Select faculty & level first"}</div>
+      </div>
+      <div ref={msgsRef} style={{flex:1,overflowY:"auto",padding:"10px 14px",display:"flex",flexDirection:"column",gap:8}}>
+        {msgs.map(m=>(
+          <div key={m.id} style={{animation:"fadeIn .2s ease both"}}>
+            {m.sys ? (
+              <div style={{background:"rgba(184,134,11,.12)",padding:"8px 10px",borderRadius:4,fontSize:".80rem",color:"rgba(255,255,255,.42)",fontStyle:"italic",textAlign:"center"}}>{m.text}</div>
+            ) : (
+              <>
+                <div className="mono" style={{fontSize:".64rem",color:"rgba(255,255,255,.28)",marginBottom:2}}>{m.user} · {m.time}</div>
+                <div style={{background:m.own?"rgba(200,64,30,.26)":"rgba(255,255,255,.07)",padding:"8px 10px",borderRadius:m.own?"7px 1px 7px 7px":"1px 7px 7px 7px",fontSize:".89rem",lineHeight:1.5,color:"rgba(255,255,255,.8)",wordBreak:"break-word"}}>{m.text}</div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:7,padding:"10px 14px",borderTop:"1px solid rgba(255,255,255,.06)",flexShrink:0}}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} placeholder="Type a message…"
+          style={{flex:1,background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:1,padding:"8px 10px",color:"var(--paper)",fontFamily:"'DM Sans',sans-serif",fontSize:".89rem",outline:"none"}}/>
+        <button onClick={send} style={{background:"var(--accent)",border:"none",color:"#fff",padding:"8px 12px",cursor:"pointer",borderRadius:1,fontSize:".97rem"}}>➤</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SIDE PANEL WRAPPER
+   ============================================================ */
+function SidePanel({ open, mode, onClose, fac, lvl, user, setPage }) {
+  return (
+    <div style={{width:open?340:0,flexShrink:0,background:"#160f04",color:"var(--paper)",display:"flex",flexDirection:"column",overflow:"hidden",transition:"width .3s cubic-bezier(.4,0,.2,1)",borderLeft:"1px solid rgba(255,255,255,.06)"}}>
+      {open && (
+        <>
+          <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,.07)",flexShrink:0}}>
+            {["upload","chat"].map(t=>(
+              <div key={t} style={{flex:1,padding:"12px 6px",color:mode===t?"var(--paper)":"rgba(255,255,255,.38)",fontFamily:"'DM Mono',monospace",fontSize:".66rem",letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",borderBottom:mode===t?"2px solid var(--accent)":"2px solid transparent",textAlign:"center"}}
+                onClick={()=>onClose(t)}>
+                {t==="upload"?"📎 Upload":"💬 Chat"}
+              </div>
+            ))}
+          </div>
+          {mode==="upload" ? <UploadPanel setPage={setPage}/> : <ChatPanel fac={fac} lvl={lvl} user={user}/>}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   ROOT APP
+   ============================================================ */
+function App() {
+  const [authDone,   setAuthDone]   = useState(false);
+  const [user,       setUser]       = useState(null);
+  const [isGuest,    setIsGuest]    = useState(false);
+  const [page,       setPage]       = useState("home");
+  const [panelOpen,  setPanelOpen]  = useState(false);
+  const [panelMode,  setPanelMode]  = useState("upload");
+  const [quizFac,    setQuizFac]    = useState("");
+  const [quizLvl,    setQuizLvl]    = useState("");
+
+  useEffect(()=>{
+    const sess = JSON.parse(localStorage.getItem("ecl_session")||"null");
+    if (sess) {
+      const users = getUsers();
+      const u = users.find(u=>u.id===sess.id&&u.email===sess.email);
+      if (u) { setUser(u); setAuthDone(true); }
+    }
+  },[]);
+
+  function handleAuth(u) {
+    if (u) {
+      setUser(u); setIsGuest(false);
+      localStorage.setItem("ecl_session", JSON.stringify({id:u.id,email:u.email}));
+    } else {
+      setUser(null); setIsGuest(true);
+    }
+    setAuthDone(true);
+  }
+
+  function handleLogout() {
+    setUser(null); setIsGuest(false); setAuthDone(false);
+    localStorage.removeItem("ecl_session");
+  }
+
+  function handleTogglePanel(mode) {
+    if (panelOpen && panelMode===mode) { setPanelOpen(false); }
+    else { setPanelOpen(true); setPanelMode(mode); }
+  }
+
+  const pages = {
+    home:       <HomePage setPage={setPage} onTogglePanel={handleTogglePanel}/>,
+    quiz:       <QuizPage user={user} setPage={setPage}/>,
+    dashboard:  <DashboardPage user={user}/>,
+    flashcards: <FlashcardsPage setPage={setPage}/>,
+    planner:    <PlannerPage setPage={setPage}/>,
+    info:       <InfoPage/>,
+  };
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",height:"100vh",position:"relative",zIndex:1}}>
+      {!authDone && <AuthOverlay onAuth={handleAuth}/>}
+
+      {isGuest && (
+        <div style={{background:"rgba(184,134,11,.1)",borderBottom:"1px solid rgba(184,134,11,.3)",padding:"8px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:".82rem",color:"var(--gold)",flexShrink:0}}>
+          <span className="mono" style={{fontSize:".66rem",letterSpacing:".08em"}}>👤 Browsing as guest — your progress won't be saved</span>
+          <button onClick={()=>setAuthDone(false)} style={{background:"var(--gold)",color:"#fff",border:"none",padding:"5px 14px",fontSize:".78rem",cursor:"pointer",borderRadius:1,fontFamily:"'DM Sans',sans-serif"}}>Sign In / Register</button>
+        </div>
+      )}
+
+      <Nav user={user} isGuest={isGuest} page={page} setPage={setPage}
+        onShowAuth={()=>setAuthDone(false)} onLogout={handleLogout}
+        onTogglePanel={handleTogglePanel} panelMode={panelMode} panelOpen={panelOpen}/>
+
+      <div style={{flex:1,display:"flex",overflow:"hidden"}}>
+        <div style={{flex:1,overflowY:"auto",padding:"28px 24px 60px"}}>
+          <div style={{maxWidth:840,margin:"0 auto"}}>
+            {authDone && pages[page]}
+          </div>
+        </div>
+        <SidePanel open={panelOpen} mode={panelMode}
+          onClose={m=>{setPanelMode(m);setPanelOpen(true);}}
+          fac={quizFac} lvl={quizLvl} user={user} setPage={setPage}/>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
