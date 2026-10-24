@@ -3,7 +3,9 @@
 // Environment Variables.
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+// Default model. You can override it without editing code by adding a
+// GROQ_MODEL environment variable in Vercel (useful when Groq retires a model).
+const DEFAULT_MODEL = "openai/gpt-oss-120b";
 const MAX_PROMPT_CHARS = 20000;
 const MAX_SYSTEM_CHARS = 4000;
 
@@ -36,6 +38,17 @@ module.exports = async function handler(req, res) {
   if (typeof system === "string" && system) messages.push({ role: "system", content: system });
   messages.push({ role: "user", content: prompt });
 
+  const model = process.env.GROQ_MODEL || DEFAULT_MODEL;
+  const payload = {
+    model,
+    // gpt-oss models spend part of this budget on internal reasoning,
+    // so it is larger than before to avoid cut-off quiz JSON.
+    max_tokens: 4000,
+    temperature: 0.7,
+    messages
+  };
+  if (model.startsWith("openai/gpt-oss")) payload.reasoning_effort = "low";
+
   try {
     const upstream = await fetch(GROQ_URL, {
       method: "POST",
@@ -43,12 +56,7 @@ module.exports = async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        max_tokens: 2000,
-        temperature: 0.7,
-        messages
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await upstream.json().catch(() => ({}));
