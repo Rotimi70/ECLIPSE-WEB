@@ -60,46 +60,31 @@ const { useState, useEffect, useRef, useCallback } = React;
 /* ============================================================
    GROQ API CONFIG
    ============================================================ */
-const GROQ_MODEL = "llama-3.3-70b-versatile"; // Latest fast model
-const GROQ_API_KEY = "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";
-
-// Always return the hardcoded key
-const getGroqKey = () => GROQ_API_KEY;
-const saveGroqKey = () => {};
-
-/* ============================================================
-   GROQ API HELPER — replaces Anthropic callAI
-   ============================================================ */
+// The Groq key now lives on the server (Vercel env var GROQ_API_KEY).
+// The browser only talks to our own /api/chat endpoint, never to Groq directly.
 async function callGroq(prompt, systemPrompt = "") {
-  const apiKey = getGroqKey();
-  if (!apiKey) throw new Error("NO_API_KEY");
-
-  const messages = [];
-  if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
-  messages.push({ role: "user", content: prompt });
-
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      max_tokens: 2000,
-      temperature: 0.7,
-      messages
-    })
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    if (res.status === 401) throw new Error("INVALID_KEY");
-    throw new Error(err?.error?.message || `Groq API error ${res.status}`);
+  let res;
+  try {
+    res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, system: systemPrompt })
+    });
+  } catch (e) {
+    throw new Error("Could not reach the server. Check your internet connection and try again.");
   }
 
-  const data = await res.json();
-  return data.choices[0].message.content;
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    // Server-side key missing or rejected by Groq
+    if (data?.code === "NO_API_KEY") throw new Error("NO_API_KEY");
+    if (data?.code === "INVALID_KEY") throw new Error("INVALID_KEY");
+    throw new Error(data?.error || `AI request failed (${res.status})`);
+  }
+
+  if (!data?.content) throw new Error("The AI returned an empty response. Please try again.");
+  return data.content;
 }
 
 /* ============================================================
@@ -536,22 +521,16 @@ function HomePage({ setPage, onTogglePanel }) {
    ERROR HELPER for API errors
    ============================================================ */
 function ApiError({ error, onSetupKey }) {
-  if (error === "NO_API_KEY" || error?.includes("NO_API_KEY")) {
+  const isKeyProblem =
+    error === "NO_API_KEY" || error?.includes?.("NO_API_KEY") ||
+    error === "INVALID_KEY" || error?.includes?.("INVALID_KEY");
+  if (isKeyProblem) {
     return (
       <div style={{background:"#fff3e0",border:"1.5px solid #ff9800",padding:"16px 20px",borderRadius:2,marginBottom:16}}>
-        <div className="mono" style={{fontSize:".72rem",color:"#e65100",letterSpacing:".1em",textTransform:"uppercase",marginBottom:8}}>⚠ No Groq API Key</div>
-        <p style={{fontSize:".91rem",color:"#5d4037",lineHeight:1.6,marginBottom:12}}>
-          You need a free Groq API key to use AI features. Get one at <a href="https://console.groq.com" target="_blank" style={{color:"#e65100"}}>console.groq.com</a> — takes 1 minute, no credit card.
+        <div className="mono" style={{fontSize:".72rem",color:"#e65100",letterSpacing:".1em",textTransform:"uppercase",marginBottom:8}}>⚠ AI temporarily unavailable</div>
+        <p style={{fontSize:".91rem",color:"#5d4037",lineHeight:1.6}}>
+          The AI service isn't set up correctly on our side right now. This isn't something you did — please try again later.
         </p>
-        <button className="btn btn-dark" onClick={onSetupKey} style={{fontSize:".88rem",padding:"8px 18px"}}>Set Up API Key →</button>
-      </div>
-    );
-  }
-  if (error === "INVALID_KEY" || error?.includes("INVALID_KEY")) {
-    return (
-      <div style={{background:"#fde8e4",border:"1.5px solid var(--accent)",padding:"14px 18px",borderRadius:2,marginBottom:16}}>
-        <div className="mono" style={{fontSize:".72rem",color:"var(--accent)",letterSpacing:".1em",marginBottom:6}}>✗ Invalid API Key</div>
-        <p style={{fontSize:".89rem",color:"var(--ink)",lineHeight:1.6}}>Your Groq API key is invalid. Please go to the Home page and update it.</p>
       </div>
     );
   }
