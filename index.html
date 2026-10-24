@@ -44,6 +44,28 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opa
 .field-input::placeholder{color:var(--border);}
 select.field-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a6f5e'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;}
 textarea.field-input{resize:vertical;min-height:110px;line-height:1.6;}
+.ecl-back{font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;background:#fff;border:1.5px solid var(--border);color:var(--ink);padding:9px 16px;margin-bottom:18px;cursor:pointer;border-radius:1px;transition:all .15s;}
+.ecl-back:hover{border-color:var(--ink);box-shadow:3px 3px 0 var(--cream);}
+.ecl-brand{cursor:pointer;}
+.ecl-panel-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.15rem;padding:0 14px;cursor:pointer;}
+.ecl-panel-close:hover{color:#fff;}
+
+/* ---------- Phone layout ---------- */
+@media (max-width:768px){
+  body{font-size:15.5px;}
+  .ecl-nav{height:auto !important;flex-wrap:wrap;padding:8px 12px !important;row-gap:6px;}
+  .ecl-brand{font-size:1.3rem !important;margin-right:0 !important;order:1;}
+  .ecl-actions{order:2;margin-left:auto;gap:6px !important;}
+  .ecl-username{display:none;}
+  .ecl-links{order:3;flex:0 0 100% !important;width:100%;overflow-x:auto;padding-bottom:2px;}
+  .ecl-link{padding:10px 13px !important;}
+  .ecl-main{padding:18px 14px 80px !important;}
+  .card{padding:20px 18px;}
+  /* Upload / Chat panel becomes a full-screen overlay instead of squeezing the page */
+  .ecl-panel{position:fixed !important;top:0;right:0;bottom:0;z-index:300;}
+  .ecl-panel.is-open{width:min(100vw,420px) !important;}
+  .ecl-panel:not(.is-open){display:none !important;}
+}
 
 </style>
 </head>
@@ -434,19 +456,19 @@ function Nav({ user, isGuest, page, setPage, onShowAuth, onLogout, onTogglePanel
     {id:"info",icon:"💡",label:"Features Guide"},
   ];
   return (
-    <nav style={{height:62,flexShrink:0,background:"var(--ink)",display:"flex",alignItems:"center",padding:"0 20px",position:"relative",zIndex:50,boxShadow:"0 2px 12px rgba(0,0,0,.18)"}}>
-      <div className="serif" style={{fontSize:"1.72rem",fontWeight:700,color:"#f5f0e8",letterSpacing:"-0.5px",marginRight:28,flexShrink:0}}>
+    <nav className="ecl-nav" style={{height:62,flexShrink:0,background:"var(--ink)",display:"flex",alignItems:"center",padding:"0 20px",position:"relative",zIndex:50,boxShadow:"0 2px 12px rgba(0,0,0,.18)"}}>
+      <div className="serif ecl-brand" onClick={()=>setPage("home")} title="Go to Home" style={{fontSize:"1.72rem",fontWeight:700,color:"#f5f0e8",letterSpacing:"-0.5px",marginRight:28,flexShrink:0}}>
         ECLIPSE <span style={{color:"var(--accent)",fontStyle:"italic"}}>LEARN</span>
       </div>
-      <div style={{display:"flex",gap:2,flex:1,overflowX:"auto"}}>
+      <div className="ecl-links" style={{display:"flex",gap:2,flex:1,overflowX:"auto"}}>
         {navLinks.map(l=>(
-          <button key={l.id} onClick={()=>setPage(l.id)}
+          <button key={l.id} className="ecl-link" onClick={()=>setPage(l.id)}
             style={{background:page===l.id?"rgba(255,255,255,.12)":"none",border:"none",color:page===l.id?"#fff":"rgba(255,255,255,.52)",fontFamily:"'DM Sans',sans-serif",fontSize:".91rem",fontWeight:500,padding:"8px 13px",cursor:"pointer",borderRadius:4,transition:"all .15s",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:6}}>
             <span style={{fontSize:"1.05rem"}}>{l.icon}</span><span>{l.label}</span>
           </button>
         ))}
       </div>
-      <div style={{display:"flex",gap:8,alignItems:"center",flexShrink:0}}>
+      <div className="ecl-actions" style={{display:"flex",gap:8,alignItems:"center",flexShrink:0}}>
         {["upload","chat"].map(m=>(
           <button key={m} onClick={()=>onTogglePanel(m)}
             style={{background:panelOpen&&panelMode===m?"var(--accent)":"rgba(255,255,255,.1)",border:`1px solid ${panelOpen&&panelMode===m?"var(--accent)":"rgba(255,255,255,.15)"}`,color:"#fff",padding:"6px 12px",borderRadius:4,fontFamily:"'DM Mono',monospace",fontSize:".70rem",letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",transition:"all .15s"}}>
@@ -457,7 +479,7 @@ function Nav({ user, isGuest, page, setPage, onShowAuth, onLogout, onTogglePanel
           <div style={{position:"relative"}} onClick={()=>setDropOpen(d=>!d)}>
             <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",padding:"5px 10px",borderRadius:4,background:dropOpen?"rgba(255,255,255,.07)":"transparent"}}>
               <div style={{width:30,height:30,borderRadius:"50%",background:"var(--accent)",color:"#fff",fontFamily:"'DM Mono',monospace",fontSize:".78rem",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{initials}</div>
-              <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:".84rem",color:"rgba(255,255,255,.8)"}}>{user.first}</span>
+              <span className="ecl-username" style={{fontFamily:"'DM Sans',sans-serif",fontSize:".84rem",color:"rgba(255,255,255,.8)"}}>{user.first}</span>
             </div>
             {dropOpen && (
               <div style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"var(--paper)",border:"1.5px solid var(--border)",minWidth:160,boxShadow:"4px 4px 0 var(--cream)",zIndex:200}} className="anim-fadeUp">
@@ -1503,9 +1525,9 @@ function ChatPanel({ fac, lvl, user }) {
 /* ============================================================
    SIDE PANEL WRAPPER
    ============================================================ */
-function SidePanel({ open, mode, onClose, fac, lvl, user, setPage }) {
+function SidePanel({ open, mode, onClose, onHide, fac, lvl, user, setPage }) {
   return (
-    <div style={{width:open?340:0,flexShrink:0,background:"#160f04",color:"var(--paper)",display:"flex",flexDirection:"column",overflow:"hidden",transition:"width .3s cubic-bezier(.4,0,.2,1)",borderLeft:"1px solid rgba(255,255,255,.06)"}}>
+    <div className={"ecl-panel"+(open?" is-open":"")} style={{width:open?340:0,flexShrink:0,background:"#160f04",color:"var(--paper)",display:"flex",flexDirection:"column",overflow:"hidden",transition:"width .3s cubic-bezier(.4,0,.2,1)",borderLeft:"1px solid rgba(255,255,255,.06)"}}>
       {open && (
         <>
           <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,.07)",flexShrink:0}}>
@@ -1515,6 +1537,7 @@ function SidePanel({ open, mode, onClose, fac, lvl, user, setPage }) {
                 {t==="upload"?"📎 Upload":"💬 Chat"}
               </div>
             ))}
+            <button className="ecl-panel-close" onClick={onHide} aria-label="Close panel" title="Close">✕</button>
           </div>
           {mode==="upload" ? <UploadPanel setPage={setPage}/> : <ChatPanel fac={fac} lvl={lvl} user={user}/>}
         </>
@@ -1526,15 +1549,54 @@ function SidePanel({ open, mode, onClose, fac, lvl, user, setPage }) {
 /* ============================================================
    ROOT APP
    ============================================================ */
+const VALID_PAGES = ["home","quiz","dashboard","flashcards","planner","info"];
+const pageFromHash = () => {
+  const h = (window.location.hash || "").replace(/^#\/?/, "");
+  return VALID_PAGES.includes(h) ? h : "home";
+};
+
 function App() {
   const [authDone,   setAuthDone]   = useState(false);
   const [user,       setUser]       = useState(null);
   const [isGuest,    setIsGuest]    = useState(false);
-  const [page,       setPage]       = useState("home");
+  const [page,       setPageState]  = useState(pageFromHash);
   const [panelOpen,  setPanelOpen]  = useState(false);
   const [panelMode,  setPanelMode]  = useState("upload");
   const [quizFac,    setQuizFac]    = useState("");
   const [quizLvl,    setQuizLvl]    = useState("");
+  const mainRef = useRef(null);
+  const pageRef = useRef(page);
+  pageRef.current = page;
+
+  // Page navigation that the browser knows about, so the Back button and the
+  // phone's back gesture move between pages, and a refresh keeps the same page.
+  const setPage = useCallback((p) => {
+    if (!VALID_PAGES.includes(p) || p === pageRef.current) return;
+    const idx = ((window.history.state && window.history.state.idx) || 0) + 1;
+    window.history.pushState({ page: p, idx }, "", "#" + p);
+    setPageState(p);
+  }, []);
+
+  // In-app "← Back" button: go back one step, or Home if there is nothing to go back to.
+  const goBack = useCallback(() => {
+    if (window.history.state && window.history.state.idx > 0) {
+      window.history.back();
+    } else {
+      window.history.replaceState({ page: "home", idx: 0 }, "", "#home");
+      setPageState("home");
+    }
+  }, []);
+
+  useEffect(() => {
+    const first = pageFromHash();
+    window.history.replaceState({ page: first, idx: (window.history.state && window.history.state.idx) || 0 }, "", "#" + first);
+    const onPop = () => setPageState(pageFromHash());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Start at the top of each page instead of keeping the old scroll position.
+  useEffect(() => { if (mainRef.current) mainRef.current.scrollTop = 0; }, [page]);
 
   useEffect(()=>{
     const sess = JSON.parse(localStorage.getItem("ecl_session")||"null");
@@ -1590,13 +1652,17 @@ function App() {
         onTogglePanel={handleTogglePanel} panelMode={panelMode} panelOpen={panelOpen}/>
 
       <div style={{flex:1,display:"flex",overflow:"hidden"}}>
-        <div style={{flex:1,overflowY:"auto",padding:"28px 24px 60px"}}>
+        <div ref={mainRef} className="ecl-main" style={{flex:1,overflowY:"auto",padding:"28px 24px 60px"}}>
           <div style={{maxWidth:840,margin:"0 auto"}}>
+            {authDone && page !== "home" && (
+              <button className="ecl-back" onClick={goBack}>← Back</button>
+            )}
             {authDone && pages[page]}
           </div>
         </div>
         <SidePanel open={panelOpen} mode={panelMode}
           onClose={m=>{setPanelMode(m);setPanelOpen(true);}}
+          onHide={()=>setPanelOpen(false)}
           fac={quizFac} lvl={quizLvl} user={user} setPage={setPage}/>
       </div>
     </div>
